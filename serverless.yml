@@ -1,6 +1,10 @@
 service: serverless-auth
 frameworkVersion: "3"
 useDotenv: true
+custom:
+  serverless-offline:
+    host: localhost
+    httpPort: 9090
 provider:
   name: aws
   runtime: nodejs18.x
