@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
+const config = require("./constants/appConstants");
 
 module.exports.handler = (event, _, callback) => {
   const token = event.authorizationToken.replace(/Bearer /g, "");
-  const secret = process.env.JWT_SECRET;
+  const secret = config.JWT_SECRET;
   const { username } = jwt.decode(token);
   jwt.verify(token, secret, (err) => {
     if (err) {

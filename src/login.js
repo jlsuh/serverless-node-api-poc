@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const config = require("./constants/appConstants");
 
 const MIN_USERNAME_LENGTH = 3;
 
@@ -46,7 +47,7 @@ const signToken = (user) => {
       `Username must be at least ${MIN_USERNAME_LENGTH + 1} characters long`,
     );
   }
-  return jwt.sign(user, process.env.JWT_SECRET, {
+  return jwt.sign(user, config.JWT_SECRET, {
     expiresIn: 86400,
   });
 };
