@@ -5,9 +5,14 @@ module.exports.handler = async (event) => {
   try {
     return {
       statusCode: 200,
-      headers: {
-        access_token: signToken(user),
-      },
+      body: JSON.stringify(
+        {
+          message: "Login successful",
+          accessToken: signToken(user),
+        },
+        null,
+        2,
+      ),
     };
   } catch (error) {
     return {
