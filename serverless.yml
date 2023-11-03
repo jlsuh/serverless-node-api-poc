@@ -1,0 +1,31 @@
+service: serverless-auth
+frameworkVersion: "3"
+useDotenv: true
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 128
+  timeout: 10
+  stage: dev
+  region: us-east-1
+functions:
+  authorizer:
+    handler: src/authorizer.handler
+  login:
+    handler: src/login.handler
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
+  users:
+    handler: src/users.handler
+    events:
+      - http:
+          path: users
+          method: get
+          cors: true
+          authorizer: authorizer
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
