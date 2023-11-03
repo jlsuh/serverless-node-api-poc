@@ -2,7 +2,7 @@
   "name": "serverless-offline-poc",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon --exec serverless offline"
+    "start": "nodemon --exec sls offline"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
@@ -10,6 +10,7 @@
     "serverless-offline": "^13.2.0"
   },
   "dependencies": {
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "serverless": "^3.36.0"
   }
 }
