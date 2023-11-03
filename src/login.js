@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 
+const MIN_USERNAME_LENGTH = 3;
+
 module.exports.handler = async (event) => {
   const user = JSON.parse(event.body);
   try {
@@ -39,8 +41,10 @@ const signToken = (user) => {
   if (!user.username) {
     throw new Error("Body can't be empty");
   }
-  if (user.username.length <= 3) {
-    throw new Error("Username must be at least 3 characters long");
+  if (user.username.length <= MIN_USERNAME_LENGTH) {
+    throw new Error(
+      `Username must be at least ${MIN_USERNAME_LENGTH + 1} characters long`,
+    );
   }
   return jwt.sign(user, process.env.JWT_SECRET, {
     expiresIn: 86400,
