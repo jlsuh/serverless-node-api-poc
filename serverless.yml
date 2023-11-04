@@ -1,10 +1,6 @@
 service: serverless-auth
 frameworkVersion: "3"
 useDotenv: true
-custom:
-  serverless-offline:
-    host: localhost
-    httpPort: 9090
 provider:
   name: aws
   runtime: nodejs18.x
@@ -12,6 +8,10 @@ provider:
   timeout: 10
   stage: dev
   region: us-east-1
+custom:
+  serverless-offline:
+    host: localhost
+    httpPort: 9090
 functions:
   authorizer:
     handler: src/authorizer.handler
