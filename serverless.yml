@@ -33,3 +33,4 @@ functions:
 plugins:
   - serverless-offline
   - serverless-dotenv-plugin
+  - serverless-s3-local
