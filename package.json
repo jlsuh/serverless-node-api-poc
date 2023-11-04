@@ -4,13 +4,20 @@
   "scripts": {
     "start": "nodemon --exec sls offline"
   },
+  "nodemonConfig": {
+    "events": {
+      "start": "clear"
+    }
+  },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.4",
     "nodemon": "^3.0.1",
-    "serverless-dotenv-plugin": "^6.0.0",
-    "serverless-offline": "^13.2.0"
+    "serverless-offline": "^13.2.0",
+    "serverless-s3-local": "^0.8.1"
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
-    "serverless": "^3.36.0"
+    "serverless": "^3.36.0",
+    "serverless-dotenv-plugin": "^6.0.0"
   }
 }
