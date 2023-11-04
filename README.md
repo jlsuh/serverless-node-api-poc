@@ -1,32 +1,33 @@
-# Install serverless as global package
+# Install serverless as local package
 
 ```bash
-$ npm install -g serverless
+$ npm install serverless # having it as global package is discouraged
+# pnpm can be used as an alternative to enforce the exclusion of serverless in global scope
 ```
 
 # Start a new serverless project
 
 ```bash
-$ sls
+$ npx sls
 ```
 
 # Test functions locally
 
 ```bash
-$ sls invoke local -f api
+$ npx sls invoke local -f api
 ```
 
 # Install plugins
 
 ```bash
-$ sls plugin install -n serverless-offline serverless-dotenv-plugin
-$ npm i --save-dev serverless-offline serverless-dotenv-plugin
+$ npx sls plugin install -n serverless-offline serverless-dotenv-plugin # ... append other plugins
+$ npm i --save-dev serverless-offline serverless-dotenv-plugin # ... append other plugin dependencies
 ```
 
 # Start serverless-offline locally
 
 ```bash
-$ sls offline
+$ npx sls offline
 ```
 
 ## Through nodemon
