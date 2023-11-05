@@ -15,10 +15,10 @@ plugins:
 custom:
   serverless-offline:
     host: localhost
-    httpPort: 9090
+    httpPort: ${env:SLS_OFFLINE_HTTP_PORT}
   s3:
     host: localhost
-    port: 9091
+    port: ${env:S3_PORT}
     directory: ./s3-local
 resources:
   Resources:
@@ -36,24 +36,25 @@ functions:
           path: login
           method: post
           cors: true
-  users:
-    handler: src/users.handler
+  getUsers:
+    handler: src/getUsers.handler
     events:
       - http:
           path: users
           method: get
           cors: true
           authorizer: authorizer
-  webhook:
-    handler: src/webhook.handler
+  s3PutUsers:
+    handler: src/s3PutUsers.handler
     events:
       - http:
-          path: webhook
+          path: users
           method: put
+          cors: true
           authorizer: authorizer
-  s3hook:
-    handler: src/s3hook.handler
+  s3EventResponse:
+    handler: src/s3EventResponse.handler
     events:
       - s3:
           bucket: local-bucket
-          event: s3:ObjectCreated:*
+          event: s3:*
