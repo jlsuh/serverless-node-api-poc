@@ -59,3 +59,91 @@ module.exports.handler = (event, context, callback) => {
   callback(null, "ok");
 };
 ```
+
+## `[504] - Lambda timeout.`
+
+```js
+// Problematic code
+module.exports.handler = (event, context, callback) => {
+  //...
+};
+```
+
+```js
+// Solution
+module.exports.handler = async (event, context, callback) => {
+  //...
+};
+```
+
+## Server responding `502 Bad Gateway` on every single request (although error handling logic seems to be correct)
+
+### Cause 1
+
+Missing try-catch block.
+
+```js
+// Problematic code
+module.exports.handler = async (event, _, callback) => {
+  const { body } = JSON.parse(event.body);
+  if (!body) {
+    throw new Error("Body can't be empty");
+  }
+  // further logic
+};
+```
+
+```js
+// Solution
+module.exports.handler = async (event, _, callback) => {
+  const { body } = JSON.parse(event.body);
+  try {
+    if (!body) {
+      throw new Error("Body can't be empty");
+    }
+    // further logic
+  } catch (err) {
+    return {
+      // response body with error message
+    };
+  }
+};
+```
+
+### Cause 2
+
+Missing `async/await` pairs.
+
+```js
+// Problematic code
+module.exports.handler = async (/*...*/) => {
+  try {
+    anAsyncFunction(/*...*/).then(/*...*/).catch(/*...*/);
+  } catch (err) {
+    return {
+      // response body with error message
+    };
+  }
+};
+
+const anAsyncFunction = (/*...*/) => {
+  //...
+};
+```
+
+```js
+// Solution
+module.exports.handler = async (/*...*/) => {
+  try {
+    await anAsyncFunction(/*...*/).then(/*...*/).catch(/*...*/);
+  } catch (err) {
+    return {
+      // response body with error message
+    };
+  }
+};
+
+const anAsyncFunction = async (/*...*/) => {
+  //...
+};
+```
