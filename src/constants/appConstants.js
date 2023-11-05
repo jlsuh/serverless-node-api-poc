@@ -2,6 +2,8 @@ const APP_BASE_URI = process.env.APP_BASE_URI;
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 const JWT_SECRET = process.env.JWT_SECRET;
+const MIN_USERNAME_LENGTH = process.env.MIN_USERNAME_LENGTH;
+const POLICY_LANGUAGE_VERSION = process.env.POLICY_LANGUAGE_VERSION;
 const S3_PORT = process.env.S3_PORT;
 
 module.exports = Object.freeze({
@@ -9,5 +11,7 @@ module.exports = Object.freeze({
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
   JWT_SECRET,
+  MIN_USERNAME_LENGTH,
+  POLICY_LANGUAGE_VERSION,
   S3_PORT,
 });

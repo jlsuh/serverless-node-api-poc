@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
 const config = require("./constants/appConstants");
+const jwt = require("jsonwebtoken");
 
 module.exports.handler = (event, _, callback) => {
   const token = event.authorizationToken.replace(/Bearer /g, "");
@@ -18,7 +18,7 @@ const generatePolicy = (principalId, effect, resource) => {
   return {
     principalId,
     policyDocument: {
-      Version: "2012-10-17",
+      Version: config.POLICY_LANGUAGE_VERSION,
       Statement: [
         {
           Action: "execute-api:Invoke",
