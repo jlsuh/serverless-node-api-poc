@@ -4,12 +4,11 @@ const config = require("./constants/appConstants");
 module.exports.handler = (event, _, callback) => {
   const token = event.authorizationToken.replace(/Bearer /g, "");
   const secret = config.JWT_SECRET;
-  const { username } = jwt.decode(token);
   jwt.verify(token, secret, (err) => {
     if (err) {
-      console.error("JWT Error", err, err.stack);
       callback(null, denyPolicy("anonymous", event.methodArn));
     } else {
+      const { username } = jwt.decode(token);
       callback(null, allowPolicy(username, event.methodArn));
     }
   });

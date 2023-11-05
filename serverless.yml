@@ -22,7 +22,7 @@ custom:
     directory: ./s3-local
 resources:
   Resources:
-    NewResource:
+    LocalBucket:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: local-bucket
