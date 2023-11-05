@@ -40,15 +40,15 @@ functions:
     handler: src/getUsers.handler
     events:
       - http:
-          path: users
+          path: constants/users
           method: get
           cors: true
           authorizer: authorizer
-  s3PutUsers:
-    handler: src/s3PutUsers.handler
+  s3PutObject:
+    handler: src/s3PutObject.handler
     events:
       - http:
-          path: users
+          path: s3
           method: put
           cors: true
           authorizer: authorizer
