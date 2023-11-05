@@ -159,6 +159,9 @@ dist
 # Built Visual Studio Code Extensions
 *.vsix
 
+# S3 Local Buckets Folder
+s3-local/
+
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
