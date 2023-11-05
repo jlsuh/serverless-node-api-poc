@@ -34,4 +34,28 @@ $ npx sls offline
 
 ```bash
 $ nodemon --exec sls offline # already set as npm start
+# for some strange reason nodemon reloads on client-triggered s3 commands (e.g., PutObjectCommand)
+```
+
+# Solutions to errors
+
+## `Error: [504] - Lambda timeout.: Error while running handler`
+
+```js
+// Problematic code
+module.exports.handler = (event, context, callback) => {
+  console.log(JSON.stringify(event));
+  console.log(JSON.stringify(context));
+  console.log(JSON.stringify(process.env));
+};
+```
+
+```js
+// Solution
+module.exports.handler = (event, context, callback) => {
+  console.log(JSON.stringify(event));
+  console.log(JSON.stringify(context));
+  console.log(JSON.stringify(process.env));
+  callback(null, "ok");
+};
 ```
