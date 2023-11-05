@@ -20,13 +20,13 @@ module.exports.handler = async (event) => {
         2,
       ),
     };
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 422,
       body: JSON.stringify(
         {
           message: "Unprocessable entity",
-          error: err.message,
+          error: error.message,
         },
         null,
         2,
@@ -68,8 +68,8 @@ const checkBucketExists = async (bucketName) => {
   try {
     await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
     return true;
-  } catch (err) {
-    if (err.$metadata.httpStatusCode === 404) {
+  } catch (error) {
+    if (error.$metadata.httpStatusCode === 404) {
       return false;
     }
     throw new Error("Unidentified error status code");
