@@ -1,4 +1,4 @@
-service: serverless-auth
+service: serverless-node-api
 frameworkVersion: "3"
 useDotenv: true
 provider:
@@ -8,10 +8,24 @@ provider:
   timeout: 10
   stage: dev
   region: us-east-1
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-s3-local
 custom:
   serverless-offline:
     host: localhost
     httpPort: 9090
+  s3:
+    host: localhost
+    port: 9091
+    directory: ./s3-local
+resources:
+  Resources:
+    NewResource:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: local-bucket
 functions:
   authorizer:
     handler: src/authorizer.handler
@@ -30,7 +44,16 @@ functions:
           method: get
           cors: true
           authorizer: authorizer
-plugins:
-  - serverless-offline
-  - serverless-dotenv-plugin
-  - serverless-s3-local
+  webhook:
+    handler: src/webhook.handler
+    events:
+      - http:
+          path: webhook
+          method: put
+          authorizer: authorizer
+  s3hook:
+    handler: src/s3hook.handler
+    events:
+      - s3:
+          bucket: local-bucket
+          event: s3:ObjectCreated:*
