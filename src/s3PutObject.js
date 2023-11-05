@@ -1,36 +1,25 @@
 const { PutObjectCommand, HeadBucketCommand } = require("@aws-sdk/client-s3");
 const { s3Client } = require("./s3Client");
 
-module.exports.handler = async (event, _, callback) => {
+module.exports.handler = async (event) => {
   try {
     const requestBody = JSON.parse(event.body);
     await validateRequest(requestBody);
-    await putObject(requestBody)
-      .then(() => {
-        callback(null, {
-          statusCode: 200,
-          body: JSON.stringify(
-            {
-              message: "Successful object upload",
-            },
-            null,
-            2,
-          ),
-        });
-      })
-      .catch((err) =>
-        callback(null, {
-          statusCode: 503,
-          body: JSON.stringify(
-            {
-              message: "Error uploading object",
-              error: err.message,
-            },
-            null,
-            2,
-          ),
-        }),
-      );
+    const putObjectCommandOutput = await putObject(requestBody);
+    const statusCode = putObjectCommandOutput.$metadata.httpStatusCode;
+    return {
+      statusCode,
+      body: JSON.stringify(
+        {
+          message:
+            statusCode === 200
+              ? "Successful object upload"
+              : "Error while uploading object",
+        },
+        null,
+        2,
+      ),
+    };
   } catch (err) {
     return {
       statusCode: 422,
@@ -56,7 +45,11 @@ const putObject = async ({ bucketName, objectKey, data }) => {
   );
 };
 
-const validateRequest = async ({ bucketName, objectKey, data }) => {
+const validateRequest = async (requestBody) => {
+  if (!requestBody) {
+    throw new Error("Request body can't be empty");
+  }
+  const { data, bucketName, objectKey } = requestBody;
   if (!data) {
     throw new Error("Data can't be empty");
   }
@@ -76,7 +69,7 @@ const checkBucketExists = async (bucketName) => {
     await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
     return true;
   } catch (err) {
-    if (err["$metadata"].httpStatusCode === 404) {
+    if (err.$metadata.httpStatusCode === 404) {
       return false;
     }
     throw new Error("Unidentified error status code");
