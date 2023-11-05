@@ -7,5 +7,5 @@ module.exports.s3Client = new S3Client({
     accessKeyId: config.AWS_ACCESS_KEY_ID,
     secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
   },
-  endpoint: "http://localhost:9091",
+  endpoint: `http://localhost:${config.S3_PORT}`,
 });
