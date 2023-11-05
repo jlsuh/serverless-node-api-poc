@@ -2,10 +2,10 @@ const config = require("./constants/appConstants");
 const jwt = require("jsonwebtoken");
 
 module.exports.handler = async (event) => {
-  const user = JSON.parse(event.body);
-  validateRequest(user);
   try {
-    const accessToken = signToken(user);
+    const requestBody = JSON.parse(event.body);
+    validateRequest(requestBody);
+    const accessToken = signToken(requestBody);
     return {
       statusCode: 200,
       body: JSON.stringify(
@@ -35,12 +35,16 @@ module.exports.handler = async (event) => {
   }
 };
 
-const validateRequest = ({ username }) => {
+const validateRequest = (requestBody) => {
+  if (!requestBody) {
+    throw new Error("Body can't be empty");
+  }
+  const { username } = requestBody;
   if (username === "") {
     throw new Error("Username can't be empty");
   }
   if (!username) {
-    throw new Error("Body can't be empty");
+    throw new Error("Username is required");
   }
   if (username.length <= config.MIN_USERNAME_LENGTH) {
     throw new Error(
@@ -51,8 +55,7 @@ const validateRequest = ({ username }) => {
   }
 };
 
-const signToken = (user) => {
-  return jwt.sign(user, config.JWT_SECRET, {
+const signToken = (requestBody) =>
+  jwt.sign(requestBody, config.JWT_SECRET, {
     expiresIn: config.JWT_TOKEN_EXPIRATION,
   });
-};
