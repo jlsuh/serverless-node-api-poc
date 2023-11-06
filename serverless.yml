@@ -52,6 +52,14 @@ functions:
           method: put
           cors: true
           authorizer: authorizer
+  s3GetBucket:
+    handler: src/s3GetBucket.handler
+    events:
+      - http:
+          path: s3/buckets/{bucketName}
+          method: get
+          cors: true
+          authorizer: authorizer
   s3EventResponse:
     handler: src/s3EventResponse.handler
     events:
