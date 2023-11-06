@@ -7,7 +7,7 @@ module.exports.handler = async (event) => {
   try {
     const { username } = jwt.verify(token, secret);
     return allowPolicy(username, event.methodArn);
-  } catch (err) {
+  } catch (error) {
     return denyPolicy("anonymous", event.methodArn);
   }
 };
