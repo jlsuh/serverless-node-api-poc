@@ -14,7 +14,7 @@ $ npx sls
 # Test functions locally
 
 ```bash
-$ npx sls invoke local -f api
+$ npx sls invoke local -f path/to/function
 ```
 
 # Install plugins
