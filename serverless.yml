@@ -4,20 +4,20 @@ useDotenv: true
 provider:
   name: aws
   runtime: nodejs18.x
-  memorySize: 128
-  timeout: 10
-  stage: dev
-  region: us-east-1
+  stage: ${opt:stage, "development"}
+  region: ${opt:region, "us-east-1"}
+  memorySize: ${env:PROVIDER_MEMORY_SIZE}
+  timeout: ${env:PROVIDER_TIMEOUT}
 plugins:
   - serverless-offline
   - serverless-dotenv-plugin
   - serverless-s3-local
 custom:
   serverless-offline:
-    host: localhost
+    host: ${env:SLS_OFFLINE_HOST}
     httpPort: ${env:SLS_OFFLINE_HTTP_PORT}
   s3:
-    host: localhost
+    host: ${env:S3_HOST}
     port: ${env:S3_PORT}
     directory: ./s3-local
 resources:
