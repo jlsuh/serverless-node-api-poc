@@ -6,10 +6,14 @@ const {
 const { s3Client } = require("./s3Client");
 
 module.exports.handler = async (event) => {
+  const { bucketName } = event.pathParameters;
+  const requestBody = JSON.parse(event.body);
   try {
-    const requestBody = JSON.parse(event.body);
-    await validateRequest(requestBody);
-    const putObjectCommandOutput = await putObject(requestBody);
+    await validateRequest(requestBody, bucketName);
+    const putObjectCommandOutput = await putObject({
+      bucketName,
+      ...requestBody,
+    });
     const statusCode = putObjectCommandOutput.$metadata.httpStatusCode;
     return {
       statusCode,
@@ -39,7 +43,7 @@ module.exports.handler = async (event) => {
   }
 };
 
-const putObject = async ({ bucketName, objectKey, data }) => {
+const putObject = async ({ bucketName, data, objectKey }) => {
   return s3Client.send(
     new PutObjectCommand({
       Bucket: bucketName,
@@ -49,16 +53,16 @@ const putObject = async ({ bucketName, objectKey, data }) => {
   );
 };
 
-const validateRequest = async (requestBody) => {
+const validateRequest = async (requestBody, bucketName) => {
   if (!requestBody) {
     throw new Error("Request body can't be empty");
   }
-  const { data, bucketName, objectKey } = requestBody;
-  if (!data) {
-    throw new Error("Data can't be empty");
-  }
   if (!bucketName) {
     throw new Error("Bucket name can't be empty");
+  }
+  const { data, objectKey } = requestBody;
+  if (!data) {
+    throw new Error("Data can't be empty");
   }
   if (!(await checkBucketExists(bucketName))) {
     throw new Error(`No bucket found for '${bucketName}'`);

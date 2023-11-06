@@ -48,7 +48,7 @@ functions:
     handler: src/s3PutObject.handler
     events:
       - http:
-          path: s3
+          path: s3/buckets/{bucketName}
           method: put
           cors: true
           authorizer: authorizer
