@@ -40,7 +40,7 @@ functions:
     handler: src/getUsers.handler
     events:
       - http:
-          path: constants/users
+          path: data/users
           method: get
           cors: true
           authorizer: authorizer
