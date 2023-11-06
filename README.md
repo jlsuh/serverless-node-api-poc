@@ -44,11 +44,11 @@ $ nodemon --exec sls offline # already set as npm start
 $ npx sls offline # defaults to "development"
 $ npx sls offline --stage production # matches with .env.production
 # .env, .env.development, and .env.production files should be included in out repository as they define defaults.
-# .env*.local should be added to .gitignore, as those files are intended to be ignored. .env.local is where secrets can be stored.
+# .env.*.local files should be added to .gitignore, as those files are intended to be ignored. .env.local is where secrets can be stored.
 
 # DOTENV: Loading environment variables from .env, .env.development, .env.development.local
 # serverless-dotenv-plugin loads by priority: .env > .env.development > .env.development.local
-# each of repeting variables are not overwritten by the next .env file
+# each of repeating variables are not overwritten by the next .env file
 ```
 
 # Solutions to errors
