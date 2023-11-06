@@ -1,4 +1,4 @@
-const config = require("./constants/appConstants");
+const config = require("./constant/appConstants");
 const jwt = require("jsonwebtoken");
 
 module.exports.handler = async (event) => {

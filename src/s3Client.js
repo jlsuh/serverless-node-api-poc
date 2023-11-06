@@ -1,5 +1,5 @@
 const { S3Client } = require("@aws-sdk/client-s3");
-const config = require("./constants/appConstants");
+const config = require("./constant/appConstants");
 
 module.exports.s3Client = new S3Client({
   forcePathStyle: true,
