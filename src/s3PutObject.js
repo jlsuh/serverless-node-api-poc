@@ -1,4 +1,8 @@
-const { PutObjectCommand, HeadBucketCommand } = require("@aws-sdk/client-s3");
+const {
+  PutObjectCommand,
+  HeadBucketCommand,
+  NotFound,
+} = require("@aws-sdk/client-s3");
 const { s3Client } = require("./s3Client");
 
 module.exports.handler = async (event) => {
@@ -69,9 +73,9 @@ const checkBucketExists = async (bucketName) => {
     await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
     return true;
   } catch (error) {
-    if (error.$metadata.httpStatusCode === 404) {
+    if (error instanceof NotFound) {
       return false;
     }
-    throw new Error("Unidentified error status code");
+    throw new Error("Unidentified error");
   }
 };
