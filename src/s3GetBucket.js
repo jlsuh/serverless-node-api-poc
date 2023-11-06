@@ -29,7 +29,7 @@ module.exports.handler = async (event) => {
       return {
         statusCode: 404,
         body: JSON.stringify({
-          message: `Bucket '${bucketName}' not found`,
+          message: `No bucket found for '${bucketName}'`,
         }),
       };
     }
