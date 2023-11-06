@@ -4,8 +4,8 @@ useDotenv: true
 provider:
   name: aws
   runtime: nodejs18.x
-  stage: '${opt:stage, "development"}'
-  region: '${opt:region, "us-east-1"}'
+  stage: "${opt:stage, 'development'}"
+  region: "${opt:region, 'us-east-1'}"
   memorySize: "${env:PROVIDER_MEMORY_SIZE}"
   timeout: "${env:PROVIDER_TIMEOUT}"
 plugins:
