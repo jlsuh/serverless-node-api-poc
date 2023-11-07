@@ -161,3 +161,82 @@ const anAsyncFunction = async (/*...*/) => {
   //...
 };
 ```
+
+## Identical data but different `instanceof` exceptions
+
+This can be proofed by the following code:
+
+```js
+const { GetObjectCommand, NoSuchBucket } = require("@aws-sdk/client-s3");
+const { s3Client } = require("./s3Client");
+
+module.exports.handler = async (/*...*/) => {
+  try {
+    const getObjectCommandOutput = await s3Client.send(
+      new GetObjectCommand({
+        /*...*/
+      }),
+    );
+  } catch (error) {
+    if (error instanceof NoSuchBucket) {
+      return {
+        /*...*/
+      };
+    }
+    // reached
+    throw new Error("Unidentified error");
+  }
+};
+```
+
+We expect an error to be caught by the second `if` statement, but it's not.
+
+Both commands: `ListObjectsV2Command` & `GetObjectCommand` return an exception with the same data, which is observable `console.log`ging both error values. Both commands seems to return `NoSuchBucket` if the bucket does not exists. However, they differ as we evaluate them with the `instanceof` operator. Instead, we should use `S3ServiceException`:
+
+```js
+const { GetObjectCommand, S3ServiceException } = require("@aws-sdk/client-s3");
+const { s3Client } = require("./s3Client");
+
+module.exports.handler = async (/*...*/) => {
+  try {
+    const getObjectCommandOutput = await s3Client.send(
+      new GetObjectCommand({
+        /*...*/
+      }),
+    );
+  } catch (error) {
+    if (error instanceof S3ServiceException) {
+      return {
+        /*...*/
+      };
+    }
+    // never reached
+    throw new Error("Unidentified error");
+  }
+};
+```
+
+A possible alternative is to use `error.Code`, which unifies the error handling logic:
+
+```js
+const { GetObjectCommand } = require("@aws-sdk/client-s3");
+const { s3Client } = require("./s3Client");
+
+module.exports.handler = async (/*...*/) => {
+  try {
+    const getObjectCommandOutput = await s3Client.send(
+      new GetObjectCommand({
+        /*...*/
+      }),
+    );
+  } catch (error) {
+    if (error.Code === "NoSuchBucket") {
+      return {
+        /*...*/
+      };
+    }
+    // never reached
+    throw new Error("Unidentified error");
+  }
+};
+```
