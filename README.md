@@ -33,8 +33,7 @@ $ npx sls offline
 ## Through nodemon
 
 ```bash
-$ nodemon --exec sls offline # already set as npm start
-# for some strange reason nodemon reloads on client-triggered s3 commands (e.g., PutObjectCommand)
+$ nodemon --ignore ./s3-local --exec sls offline # already set as npm run dev
 ```
 
 # Start serverless with specific stage environment variables

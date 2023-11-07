@@ -2,7 +2,7 @@
   "name": "serverless-node-api",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon --exec sls offline"
+    "dev": "nodemon --ignore ./s3-local --exec sls offline"
   },
   "nodemonConfig": {
     "events": {
