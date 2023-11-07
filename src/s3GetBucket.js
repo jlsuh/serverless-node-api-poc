@@ -28,10 +28,9 @@ module.exports.handler = async (event) => {
   };
 };
 
-const listObjects = async (bucketName) => {
-  return await s3Client.send(
+const listObjects = async (bucketName) =>
+  await s3Client.send(
     new ListObjectsV2Command({
       Bucket: bucketName,
     }),
   );
-};

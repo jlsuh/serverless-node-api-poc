@@ -27,15 +27,14 @@ module.exports.handler = async (event) => {
   };
 };
 
-const putObject = async ({ bucketName, data, objectKey }) => {
-  return await s3Client.send(
+const putObject = async ({ bucketName, data, objectKey }) =>
+  await s3Client.send(
     new PutObjectCommand({
       Bucket: bucketName,
       Key: objectKey,
       Body: Buffer.from(JSON.stringify(data)),
     }),
   );
-};
 
 const validateRequest = (requestBody, bucketName) => {
   if (!requestBody) {

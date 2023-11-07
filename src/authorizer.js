@@ -28,10 +28,8 @@ const generatePolicy = (principalId, effect, resource) => {
   };
 };
 
-const denyPolicy = (principalId, resource) => {
-  return generatePolicy(principalId, "Deny", resource);
-};
+const denyPolicy = (principalId, resource) =>
+  generatePolicy(principalId, "Deny", resource);
 
-const allowPolicy = (principalId, resource) => {
-  return generatePolicy(principalId, "Allow", resource);
-};
+const allowPolicy = (principalId, resource) =>
+  generatePolicy(principalId, "Allow", resource);

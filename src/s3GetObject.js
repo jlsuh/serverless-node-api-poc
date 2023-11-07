@@ -23,11 +23,10 @@ module.exports.handler = async (event) => {
   };
 };
 
-const getObject = async (bucketName, objectName) => {
-  return await s3Client.send(
+const getObject = async (bucketName, objectName) =>
+  await s3Client.send(
     new GetObjectCommand({
       Bucket: bucketName,
       Key: objectName,
     }),
   );
-};
