@@ -6,7 +6,7 @@ module.exports.handler = async (event) => {
   let body,
     statusCode = 200;
   try {
-    const object = getObject(bucketName, objectName);
+    const object = await getObject(bucketName, objectName);
     const objectData = JSON.parse(await object.Body.transformToString());
     body = JSON.stringify({
       ...objectData,
@@ -15,7 +15,7 @@ module.exports.handler = async (event) => {
     body = JSON.stringify({
       error: error.message,
     });
-    statusCode = error.statusCode;
+    statusCode = error.$metadata.httpStatusCode;
   }
   return {
     statusCode,
@@ -23,8 +23,8 @@ module.exports.handler = async (event) => {
   };
 };
 
-const getObject = async (bucketName, objectName) =>
-  await s3Client.send(
+const getObject = (bucketName, objectName) =>
+  s3Client.send(
     new GetObjectCommand({
       Bucket: bucketName,
       Key: objectName,

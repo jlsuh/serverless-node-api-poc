@@ -8,7 +8,7 @@ module.exports.handler = async (event) => {
     statusCode = 200;
   try {
     validateRequest(requestBody, bucketName);
-    putObject({
+    await putObject({
       bucketName,
       ...requestBody,
     });
@@ -19,7 +19,7 @@ module.exports.handler = async (event) => {
     body = JSON.stringify({
       error: error.message,
     });
-    statusCode = 422;
+    statusCode = error?.$metadata?.httpStatusCode ?? 422;
   }
   return {
     statusCode,
@@ -27,8 +27,8 @@ module.exports.handler = async (event) => {
   };
 };
 
-const putObject = async ({ bucketName, data, objectKey }) =>
-  await s3Client.send(
+const putObject = ({ bucketName, data, objectKey }) =>
+  s3Client.send(
     new PutObjectCommand({
       Bucket: bucketName,
       Key: objectKey,

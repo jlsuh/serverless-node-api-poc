@@ -6,7 +6,7 @@ module.exports.handler = async (event) => {
     statusCode = 200;
   try {
     const { bucketName } = event.pathParameters;
-    const { KeyCount, Contents } = listObjects(bucketName);
+    const { KeyCount, Contents } = await listObjects(bucketName);
     body = JSON.stringify(
       !!KeyCount
         ? {
@@ -20,7 +20,7 @@ module.exports.handler = async (event) => {
     body = JSON.stringify({
       error: error.message,
     });
-    statusCode = error.statusCode;
+    statusCode = error.$metadata.httpStatusCode;
   }
   return {
     statusCode,
@@ -28,8 +28,8 @@ module.exports.handler = async (event) => {
   };
 };
 
-const listObjects = async (bucketName) =>
-  await s3Client.send(
+const listObjects = (bucketName) =>
+  s3Client.send(
     new ListObjectsV2Command({
       Bucket: bucketName,
     }),
