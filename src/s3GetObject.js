@@ -6,10 +6,8 @@ module.exports.handler = async (event) => {
   let body,
     statusCode = 200;
   try {
-    const getObjectCommandOutput = await getObject(bucketName, objectName);
-    const objectData = JSON.parse(
-      await getObjectCommandOutput.Body.transformToString(),
-    );
+    const object = await getObject(bucketName, objectName);
+    const objectData = JSON.parse(await object.Body.transformToString());
     body = JSON.stringify({
       ...objectData,
     });

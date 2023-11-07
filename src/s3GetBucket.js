@@ -6,8 +6,7 @@ module.exports.handler = async (event) => {
     statusCode = 200;
   try {
     const { bucketName } = event.pathParameters;
-    const listObjectsV2CommandOutput = await listObjects(bucketName);
-    const { KeyCount, Contents } = listObjectsV2CommandOutput;
+    const { KeyCount, Contents } = await listObjects(bucketName);
     body = JSON.stringify(
       !!KeyCount
         ? {

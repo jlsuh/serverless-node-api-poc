@@ -4,19 +4,16 @@ const { s3Client } = require("./s3Client");
 module.exports.handler = async (event) => {
   const { bucketName } = event.pathParameters;
   const requestBody = JSON.parse(event.body);
-  let body, statusCode;
+  let body,
+    statusCode = 200;
   try {
     validateRequest(requestBody, bucketName);
-    const putObjectCommandOutput = await putObject({
+    const putOutput = await putObject({
       bucketName,
       ...requestBody,
     });
-    statusCode = putObjectCommandOutput.$metadata.httpStatusCode;
     body = JSON.stringify({
-      message:
-        statusCode === 200
-          ? "Successful object upload"
-          : "Error while uploading object",
+      message: "Successful object upload",
     });
   } catch (error) {
     body = JSON.stringify({
