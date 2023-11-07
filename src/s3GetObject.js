@@ -3,6 +3,8 @@ const { s3Client } = require("./s3Client");
 
 module.exports.handler = async (event) => {
   const { bucketName, objectName } = event.pathParameters;
+  let body,
+    statusCode = 200;
   try {
     const getObjectCommandOutput = await s3Client.send(
       new GetObjectCommand({
@@ -13,18 +15,17 @@ module.exports.handler = async (event) => {
     const objectData = JSON.parse(
       await getObjectCommandOutput.Body.transformToString(),
     );
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        ...objectData,
-      }),
-    };
+    body = JSON.stringify({
+      ...objectData,
+    });
   } catch (error) {
-    return {
-      statusCode: 404,
-      body: JSON.stringify({
-        error: error.message,
-      }),
-    };
+    body = JSON.stringify({
+      error: error.message,
+    });
+    statusCode = error.statusCode;
   }
+  return {
+    statusCode,
+    body,
+  };
 };

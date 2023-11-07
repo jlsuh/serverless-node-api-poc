@@ -2,32 +2,35 @@ const config = require("./constant/appConstants");
 const jwt = require("jsonwebtoken");
 
 module.exports.handler = async (event) => {
+  let body,
+    headers = {},
+    statusCode = 200;
   try {
     const requestBody = JSON.parse(event.body);
     validateRequest(requestBody);
     const accessToken = signToken(requestBody);
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        accessToken,
-      }),
-    };
+    body = JSON.stringify({
+      accessToken,
+    });
   } catch (error) {
-    return {
-      statusCode: 401,
-      headers: {
-        "WWW-Authenticate": "Bearer realm=localhost",
-      },
-      body: JSON.stringify({
-        error: error.message,
-      }),
+    body = JSON.stringify({
+      error: error.message,
+    });
+    headers = {
+      "WWW-Authenticate": "Bearer realm=localhost",
     };
+    statusCode = 401;
   }
+  return {
+    statusCode,
+    body,
+    headers,
+  };
 };
 
 const validateRequest = (requestBody) => {
   if (!requestBody) {
-    throw new Error("Body can't be empty");
+    throw new Error("Request body is required");
   }
   const { username } = requestBody;
   if (username === "") {
