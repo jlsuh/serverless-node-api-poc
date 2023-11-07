@@ -1,5 +1,5 @@
-const { s3Client } = require("./s3Client");
 const { ListObjectsV2Command, NoSuchBucket } = require("@aws-sdk/client-s3");
+const { s3Client } = require("./s3Client");
 
 module.exports.handler = async (event) => {
   const { bucketName } = event.pathParameters;
@@ -30,6 +30,7 @@ module.exports.handler = async (event) => {
         statusCode: 404,
         body: JSON.stringify({
           message: `No bucket found for '${bucketName}'`,
+          error: error.message,
         }),
       };
     }
