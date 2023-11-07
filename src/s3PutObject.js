@@ -8,7 +8,7 @@ module.exports.handler = async (event) => {
     statusCode = 200;
   try {
     validateRequest(requestBody, bucketName);
-    const putOutput = await putObject({
+    putObject({
       bucketName,
       ...requestBody,
     });
@@ -28,7 +28,7 @@ module.exports.handler = async (event) => {
 };
 
 const putObject = async ({ bucketName, data, objectKey }) => {
-  return s3Client.send(
+  return await s3Client.send(
     new PutObjectCommand({
       Bucket: bucketName,
       Key: objectKey,

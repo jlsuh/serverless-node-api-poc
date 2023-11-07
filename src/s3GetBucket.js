@@ -6,7 +6,7 @@ module.exports.handler = async (event) => {
     statusCode = 200;
   try {
     const { bucketName } = event.pathParameters;
-    const { KeyCount, Contents } = await listObjects(bucketName);
+    const { KeyCount, Contents } = listObjects(bucketName);
     body = JSON.stringify(
       !!KeyCount
         ? {
@@ -29,7 +29,7 @@ module.exports.handler = async (event) => {
 };
 
 const listObjects = async (bucketName) => {
-  return s3Client.send(
+  return await s3Client.send(
     new ListObjectsV2Command({
       Bucket: bucketName,
     }),
