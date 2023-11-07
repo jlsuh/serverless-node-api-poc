@@ -6,12 +6,7 @@ module.exports.handler = async (event) => {
   let body,
     statusCode = 200;
   try {
-    const getObjectCommandOutput = await s3Client.send(
-      new GetObjectCommand({
-        Bucket: bucketName,
-        Key: objectName,
-      }),
-    );
+    const getObjectCommandOutput = await getObject(bucketName, objectName);
     const objectData = JSON.parse(
       await getObjectCommandOutput.Body.transformToString(),
     );
@@ -28,4 +23,13 @@ module.exports.handler = async (event) => {
     statusCode,
     body,
   };
+};
+
+const getObject = (bucketName, objectName) => {
+  return s3Client.send(
+    new GetObjectCommand({
+      Bucket: bucketName,
+      Key: objectName,
+    }),
+  );
 };
