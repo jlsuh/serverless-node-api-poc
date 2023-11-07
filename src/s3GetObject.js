@@ -14,10 +14,13 @@ module.exports.handler = async (event) => {
         Key: objectName,
       }),
     );
+    const objectData = JSON.parse(
+      await getObjectCommandOutput.Body.transformToString(),
+    );
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: `Object '${objectName}' found in bucket '${bucketName}'`,
+        ...objectData,
       }),
     };
   } catch (error) {
