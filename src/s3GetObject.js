@@ -1,8 +1,4 @@
-const {
-  GetObjectCommand,
-  NoSuchKey,
-  S3ServiceException,
-} = require("@aws-sdk/client-s3");
+const { GetObjectCommand } = require("@aws-sdk/client-s3");
 const { s3Client } = require("./s3Client");
 
 module.exports.handler = async (event) => {
@@ -24,24 +20,11 @@ module.exports.handler = async (event) => {
       }),
     };
   } catch (error) {
-    if (error instanceof NoSuchKey) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({
-          message: `No object found for '${objectName}' in '${bucketName}'`,
-          error: error.message,
-        }),
-      };
-    }
-    if (error instanceof S3ServiceException) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({
-          message: `No bucket found for '${bucketName}'`,
-          error: error.message,
-        }),
-      };
-    }
-    throw new Error("Unidentified error");
+    return {
+      statusCode: 404,
+      body: JSON.stringify({
+        error: error.message,
+      }),
+    };
   }
 };

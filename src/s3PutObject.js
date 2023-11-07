@@ -17,28 +17,19 @@ module.exports.handler = async (event) => {
     const statusCode = putObjectCommandOutput.$metadata.httpStatusCode;
     return {
       statusCode,
-      body: JSON.stringify(
-        {
-          message:
-            statusCode === 200
-              ? "Successful object upload"
-              : "Error while uploading object",
-        },
-        null,
-        2,
-      ),
+      body: JSON.stringify({
+        message:
+          statusCode === 200
+            ? "Successful object upload"
+            : "Error while uploading object",
+      }),
     };
   } catch (error) {
     return {
       statusCode: 422,
-      body: JSON.stringify(
-        {
-          message: "Unprocessable entity",
-          error: error.message,
-        },
-        null,
-        2,
-      ),
+      body: JSON.stringify({
+        error: error.message,
+      }),
     };
   }
 };

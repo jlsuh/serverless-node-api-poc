@@ -8,14 +8,9 @@ module.exports.handler = async (event) => {
     const accessToken = signToken(requestBody);
     return {
       statusCode: 200,
-      body: JSON.stringify(
-        {
-          message: "Login successful",
-          accessToken,
-        },
-        null,
-        2,
-      ),
+      body: JSON.stringify({
+        accessToken,
+      }),
     };
   } catch (error) {
     return {
@@ -23,14 +18,9 @@ module.exports.handler = async (event) => {
       headers: {
         "WWW-Authenticate": "Bearer realm=localhost",
       },
-      body: JSON.stringify(
-        {
-          message: "Login failed",
-          error: error.message,
-        },
-        null,
-        2,
-      ),
+      body: JSON.stringify({
+        error: error.message,
+      }),
     };
   }
 };
