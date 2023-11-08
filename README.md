@@ -239,3 +239,14 @@ module.exports.handler = async (/*...*/) => {
   }
 };
 ```
+
+# Dockerized Postgres
+
+```bash
+$ docker compose --env-file .env.development.local up -d
+$ docker compose --env-file .env.development.local config
+$ docker exec -ti containerId bash
+$ psql -U root serverless-node-api
+$ psql \l
+$ \q
+```
