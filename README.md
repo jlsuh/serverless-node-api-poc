@@ -262,4 +262,4 @@ sudo service docker start
 make: *** [makefile:6: start] Error 1
 ```
 
-Fix this by stopping Docker Desktop and running `make` again.
+Fix this by stopping Docker Desktop and running `make stop` & `make` again.
