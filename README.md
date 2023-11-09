@@ -250,3 +250,16 @@ $ psql -U root serverless-node-api
 $ psql \l
 $ \q
 ```
+
+## Docker Desktop + WSL's `sudo service docker start`
+
+`make` may fail with the following error:
+
+```bash
+$ make
+sudo service docker start
+ * Starting Docker: docker
+make: *** [makefile:6: start] Error 1
+```
+
+Fix this by stopping Docker Desktop and running `make` again.
