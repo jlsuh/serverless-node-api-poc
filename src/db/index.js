@@ -9,6 +9,11 @@ const pool = new Pool({
   user: config.POSTGRES_USER,
 });
 
-module.exports.query = async (text, params, callback) => {
-  return pool.query(text, params, callback);
+module.exports = {
+  query: async (text, params, callback) => {
+    return pool.query(text, params, callback);
+  },
+  getClient: async () => {
+    return pool.connect();
+  },
 };
