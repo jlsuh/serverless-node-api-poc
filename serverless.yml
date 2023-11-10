@@ -27,6 +27,8 @@ resources:
       Properties:
         BucketName: local-bucket
 functions:
+  initDb:
+    handler: src/db/initDb.handler
   authorizer:
     handler: src/authorizer.handler
   login:
@@ -36,8 +38,16 @@ functions:
           path: login
           method: post
           cors: true
-  getUsers:
-    handler: src/getUsers.handler
+  getDbUsers:
+    handler: src/getDbUsers.handler
+    events:
+      - http:
+          path: db/users
+          method: get
+          cors: true
+          authorizer: authorizer
+  getDataUsers:
+    handler: src/getDataUsers.handler
     events:
       - http:
           path: data/users
