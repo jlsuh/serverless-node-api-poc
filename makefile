@@ -9,6 +9,10 @@ start:
 up:
 	$(BASE_COMPOSE) up -d
 
+dev:
+	npm run initDb
+	npm run dev
+
 down:
 	$(BASE_COMPOSE) down --rmi all -v
 
