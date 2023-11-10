@@ -2,31 +2,32 @@ const config = require("./constant/appConstants");
 const jwt = require("jsonwebtoken");
 
 module.exports.handler = async (event) => {
-  let body,
-    headers = {},
-    statusCode = 200;
   try {
     const requestBody = JSON.parse(event.body);
     validateRequest(requestBody);
-    const accessToken = signToken(requestBody);
-    body = JSON.stringify({
-      accessToken,
-    });
-  } catch (error) {
-    body = JSON.stringify({
-      error: error.message,
-    });
-    headers = {
-      "WWW-Authenticate": "Bearer realm=localhost",
+    return {
+      body: JSON.stringify({
+        accessToken: signToken(requestBody),
+      }),
+      statusCode: 200,
     };
-    statusCode = 401;
+  } catch (error) {
+    return {
+      body: JSON.stringify({
+        error: error.message,
+      }),
+      headers: {
+        "WWW-Authenticate": "Bearer realm=localhost",
+      },
+      statusCode: 401,
+    };
   }
-  return {
-    statusCode,
-    body,
-    headers,
-  };
 };
+
+const signToken = (requestBody) =>
+  jwt.sign(requestBody, config.JWT_SECRET, {
+    expiresIn: config.JWT_TOKEN_EXPIRATION,
+  });
 
 const validateRequest = (requestBody) => {
   if (!requestBody) {
@@ -47,8 +48,3 @@ const validateRequest = (requestBody) => {
     );
   }
 };
-
-const signToken = (requestBody) =>
-  jwt.sign(requestBody, config.JWT_SECRET, {
-    expiresIn: config.JWT_TOKEN_EXPIRATION,
-  });
