@@ -1,126 +1,101 @@
 [
   {
-    "id": 1,
     "fullname": "John Doe",
     "username": "jdoe"
   },
   {
-    "id": 2,
     "fullname": "James Dubois",
     "username": "jdubois"
   },
   {
-    "id": 3,
     "fullname": "Caroline Simons",
     "username": "csimons"
   },
   {
-    "id": 4,
     "fullname": "Shawn Michaels",
     "username": "smichaels"
   },
   {
-    "id": 5,
     "fullname": "Timothy White",
     "username": "twhite"
   },
   {
-    "id": 6,
     "fullname": "Jonas Blue",
     "username": "jblue"
   },
   {
-    "id": 7,
     "fullname": "Juan Gonzalez",
     "username": "jgonzalez"
   },
   {
-    "id": 8,
     "fullname": "Samantha Smith",
     "username": "ssmith"
   },
   {
-    "id": 9,
     "fullname": "Linda Anderson",
     "username": "landerson"
   },
   {
-    "id": 10,
     "fullname": "Robert Johnson",
     "username": "rjohnson"
   },
   {
-    "id": 11,
     "fullname": "William Davis",
     "username": "wdavis"
   },
   {
-    "id": 12,
     "fullname": "Richard Miller",
     "username": "rmiller"
   },
   {
-    "id": 13,
     "fullname": "Thomas Wilson",
     "username": "twilson"
   },
   {
-    "id": 14,
     "fullname": "Mary Taylor",
     "username": "mtaylor"
   },
   {
-    "id": 15,
     "fullname": "Barbara Anderson",
     "username": "banderson"
   },
   {
-    "id": 16,
     "fullname": "Elizabeth Thomas",
     "username": "ethomas"
   },
   {
-    "id": 17,
     "fullname": "Jennifer Jackson",
     "username": "jjackson"
   },
   {
-    "id": 18,
     "fullname": "Maria White",
     "username": "mwhite"
   },
   {
-    "id": 19,
     "fullname": "Susan Harris",
     "username": "sharris"
   },
   {
-    "id": 20,
     "fullname": "Margaret Martin",
     "username": "mmartin"
   },
   {
-    "id": 21,
     "fullname": "Dorothy Thompson",
     "username": "dthompson"
   },
   {
-    "id": 22,
     "fullname": "Lisa Garcia",
     "username": "lgarcia"
   },
   {
-    "id": 23,
     "fullname": "Nancy Martinez",
     "username": "nmartinez"
   },
   {
-    "id": 24,
     "fullname": "Karen Robinson",
     "username": "krobinson"
   },
   {
-    "id": 25,
     "fullname": "Betty Clark",
     "username": "bclark"
   }
