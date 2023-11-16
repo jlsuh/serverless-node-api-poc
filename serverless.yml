@@ -1,3 +1,5 @@
+org: jlsuh
+app: serverless-node-api
 service: serverless-node-api
 frameworkVersion: "3"
 useDotenv: true
@@ -12,6 +14,9 @@ plugins:
   - serverless-offline
   - serverless-dotenv-plugin
   - serverless-s3-local
+package:
+  patterns:
+    - "!node_modules/**"
 custom:
   serverless-offline:
     host: "${env:SLS_OFFLINE_HOST}"
