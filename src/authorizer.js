@@ -16,7 +16,7 @@ const generatePolicy = (principalId, effect, resource) => {
   return {
     principalId,
     policyDocument: {
-      Version: config.POLICY_LANGUAGE_VERSION,
+      Version: config.API_VERSION,
       Statement: [
         {
           Action: "execute-api:Invoke",
