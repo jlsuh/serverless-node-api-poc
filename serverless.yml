@@ -1,5 +1,3 @@
-org: jlsuh
-app: serverless-node-api
 service: serverless-node-api
 frameworkVersion: "3"
 useDotenv: true
@@ -11,8 +9,9 @@ provider:
   memorySize: "${env:PROVIDER_MEMORY_SIZE}"
   timeout: "${env:PROVIDER_TIMEOUT}"
 plugins:
-  - serverless-offline
   - serverless-dotenv-plugin
+  - serverless-offline-sqs
+  - serverless-offline
   - serverless-s3-local
 package:
   patterns:
@@ -21,16 +20,28 @@ custom:
   serverless-offline:
     host: "${env:SLS_OFFLINE_HOST}"
     httpPort: "${env:SLS_OFFLINE_HTTP_PORT}"
+  serverless-offline-sqs:
+    accessKeyId: ${env.${self:provider.stage}:AWS_ACCESS_KEY_ID}
+    apiVersion: "${env:API_VERSION}"
+    autoCreate: true
+    endpoint: "${env:BASE_URI}:${env:SQS_OFFLINE_HOST_PORT}"
+    region: "${self:provider.region}"
+    secretAccessKey: ${env.${self:provider.stage}:AWS_SECRET_ACCESS_KEY}
+    skipCacheInvalidation: false
   s3:
+    directory: ./s3-local
     host: "${env:S3_HOST}"
     port: "${env:S3_PORT}"
-    directory: ./s3-local
 resources:
   Resources:
     LocalBucket:
       Type: "AWS::S3::Bucket"
       Properties:
         BucketName: local-bucket
+    LocalQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: local-queue
 functions:
   initDb:
     handler: src/db/initDb.handler
