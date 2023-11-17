@@ -11,19 +11,19 @@
     }
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.4",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/pg": "^8.10.9",
     "nodemon": "^3.0.1",
-    "serverless-offline": "^13.2.0",
+    "serverless-offline": "^13.3.0",
     "serverless-offline-sqs": "^8.0.0",
     "serverless-s3-local": "^0.8.1"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.441.0",
-    "@aws-sdk/client-sqs": "^3.451.0",
+    "@aws-sdk/client-s3": "^3.454.0",
+    "@aws-sdk/client-sqs": "^3.454.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
-    "serverless": "^3.36.0",
+    "serverless": "^3.37.0",
     "serverless-dotenv-plugin": "^6.0.0"
   }
 }
