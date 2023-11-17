@@ -21,7 +21,7 @@ $ npx sls invoke local -f path/to/function
 
 ```bash
 $ npx sls plugin install -n serverless-offline serverless-dotenv-plugin # ... append other plugins
-$ npm i --save-dev serverless-offline serverless-dotenv-plugin # ... append other plugin dependencies
+# automatically added in package.json
 ```
 
 # Start serverless-offline locally
@@ -239,6 +239,48 @@ module.exports.handler = async (/*...*/) => {
   }
 };
 ```
+
+## SQS `AggregateError`
+
+```bash
+Warning: AggregateError
+    at internalConnectMultiple (node:net:1114:18)
+    at afterConnectMultiple (node:net:1667:5)
+
+Error:
+AggregateError
+    at internalConnectMultiple (node:net:1114:18)
+    at afterConnectMultiple (node:net:1667:5) {
+  code: 'NetworkingError',
+  message: null,
+  region: 'us-east-1',
+  hostname: 'localhost',
+  retryable: true,
+  time: 2023-11-17T18:19:20.373Z,
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:9324
+        at createConnectionError (node:net:1634:14)
+        at afterConnectMultiple (node:net:1664:40) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 9324
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:9324
+        at createConnectionError (node:net:1634:14)
+        at afterConnectMultiple (node:net:1664:40) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 9324
+    }
+  ]
+}
+```
+
+Instead of declaring the AWS access key and secret in the serverless.yml, we use the default AWS profile for development and deployment to hide our keys. Use ElasticMQ, an in-memory message queue system, with serverless-offline-sqs plugin to simulate the local AWS SQS environment. This can be done docker-composing the ElasticMQ service.
 
 # Dockerized Postgres
 
