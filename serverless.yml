@@ -2,11 +2,11 @@ service: serverless-node-api
 frameworkVersion: "3"
 useDotenv: true
 provider:
+  memorySize: "${env:PROVIDER_MEMORY_SIZE}"
   name: aws
+  region: '${opt:region, "us-east-1"}'
   runtime: nodejs18.x
   stage: '${opt:stage, "development"}'
-  region: '${opt:region, "us-east-1"}'
-  memorySize: "${env:PROVIDER_MEMORY_SIZE}"
   timeout: "${env:PROVIDER_TIMEOUT}"
 plugins:
   - serverless-dotenv-plugin
@@ -21,12 +21,12 @@ custom:
     host: "${env:SLS_OFFLINE_HOST}"
     httpPort: "${env:SLS_OFFLINE_HTTP_PORT}"
   serverless-offline-sqs:
-    accessKeyId: ${env.${self:provider.stage}:AWS_ACCESS_KEY_ID}
+    accessKeyId: "${env.${self:provider.stage}:AWS_ACCESS_KEY_ID}"
     apiVersion: "${env:API_VERSION}"
     autoCreate: true
     endpoint: "${env:BASE_URI}:${env:SQS_OFFLINE_HOST_PORT}"
     region: "${self:provider.region}"
-    secretAccessKey: ${env.${self:provider.stage}:AWS_SECRET_ACCESS_KEY}
+    secretAccessKey: "${env.${self:provider.stage}:AWS_SECRET_ACCESS_KEY}"
     skipCacheInvalidation: false
   s3:
     directory: ./s3-local
@@ -35,68 +35,68 @@ custom:
 resources:
   Resources:
     LocalBucket:
-      Type: "AWS::S3::Bucket"
       Properties:
         BucketName: local-bucket
+      Type: "AWS::S3::Bucket"
     LocalQueue:
-      Type: AWS::SQS::Queue
       Properties:
         QueueName: local-queue
+      Type: "AWS::SQS::Queue"
 functions:
   initDb:
     handler: src/db/initDb.handler
   authorizer:
     handler: src/authorizer.handler
   login:
-    handler: src/login.handler
     events:
       - http:
-          path: login
+          cors: true
           method: post
-          cors: true
+          path: login
+    handler: src/login.handler
   getDbUsers:
-    handler: src/getDbUsers.handler
     events:
       - http:
+          authorizer: authorizer
+          cors: true
+          method: get
           path: db/users
-          method: get
-          cors: true
-          authorizer: authorizer
+    handler: src/getDbUsers.handler
   getDataUsers:
-    handler: src/getDataUsers.handler
     events:
       - http:
+          authorizer: authorizer
+          cors: true
+          method: get
           path: data/users
-          method: get
-          cors: true
-          authorizer: authorizer
+    handler: src/getDataUsers.handler
   s3PutObject:
-    handler: src/s3PutObject.handler
     events:
       - http:
-          path: s3/buckets/{bucketName}
+          authorizer: authorizer
+          cors: true
           method: put
-          cors: true
-          authorizer: authorizer
-  s3GetBucket:
-    handler: src/s3GetBucket.handler
-    events:
-      - http:
           path: s3/buckets/{bucketName}
-          method: get
-          cors: true
-          authorizer: authorizer
-  s3GetObject:
-    handler: src/s3GetObject.handler
+    handler: src/s3PutObject.handler
+  s3GetBucket:
     events:
       - http:
-          path: s3/buckets/{bucketName}/objects/{objectName}
-          method: get
-          cors: true
           authorizer: authorizer
+          cors: true
+          method: get
+          path: s3/buckets/{bucketName}
+    handler: src/s3GetBucket.handler
+  s3GetObject:
+    events:
+      - http:
+          authorizer: authorizer
+          cors: true
+          method: get
+          path: s3/buckets/{bucketName}/objects/{objectName}
+    handler: src/s3GetObject.handler
   s3EventResponse:
-    handler: src/s3EventResponse.handler
     events:
       - s3:
           bucket: local-bucket
           event: "s3:*"
+    handler: src/s3EventResponse.handler
