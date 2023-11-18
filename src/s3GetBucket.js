@@ -1,7 +1,7 @@
-const { ListObjectsV2Command } = require("@aws-sdk/client-s3");
-const { s3Client } = require("./s3Client");
+import { ListObjectsV2Command } from "@aws-sdk/client-s3";
+import s3Client from "./s3Client.js";
 
-module.exports.handler = async (event) => {
+export async function handler(event) {
   try {
     const { bucketName } = event.pathParameters;
     const { KeyCount, Contents } = await listObjects(bucketName);
@@ -25,9 +25,9 @@ module.exports.handler = async (event) => {
       statusCode: error.$metadata.httpStatusCode,
     };
   }
-};
+}
 
-const listObjects = async (bucketName) =>
+const listObjects = (bucketName) =>
   s3Client.send(
     new ListObjectsV2Command({
       Bucket: bucketName,

@@ -1,10 +1,12 @@
-const users = require("./data/users");
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const users = require("./data/users.json");
 
-module.exports.handler = async () => {
+export async function handler() {
   return {
     body: JSON.stringify({
       users,
     }),
     statusCode: 200,
   };
-};
+}

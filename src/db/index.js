@@ -1,5 +1,6 @@
-const { Pool } = require("pg");
-const config = require("../constant/appConstants");
+import pkg from "pg";
+import config from "../constant/appConstants.js";
+const { Pool } = pkg;
 
 const pool = new Pool({
   database: config.POSTGRES_DB,
@@ -9,11 +10,12 @@ const pool = new Pool({
   user: config.POSTGRES_USER,
 });
 
-module.exports = {
-  query: async (text, params, callback) => {
-    return pool.query(text, params, callback);
-  },
-  getClient: async () => {
-    return pool.connect();
-  },
+const query = (text, params, callback) => {
+  return pool.query(text, params, callback);
 };
+
+const getClient = () => {
+  return pool.connect();
+};
+
+export { getClient, query };

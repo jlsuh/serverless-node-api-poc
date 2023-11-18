@@ -1,7 +1,7 @@
-const { GetObjectCommand } = require("@aws-sdk/client-s3");
-const { s3Client } = require("./s3Client");
+import { GetObjectCommand } from "@aws-sdk/client-s3";
+import s3Client from "./s3Client.js";
 
-module.exports.handler = async (event) => {
+export async function handler(event) {
   try {
     const { bucketName, objectName } = event.pathParameters;
     const object = await getObject(bucketName, objectName);
@@ -20,9 +20,9 @@ module.exports.handler = async (event) => {
       statusCode: error.$metadata.httpStatusCode,
     };
   }
-};
+}
 
-const getObject = async (bucketName, objectName) =>
+const getObject = (bucketName, objectName) =>
   s3Client.send(
     new GetObjectCommand({
       Bucket: bucketName,

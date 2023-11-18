@@ -1,9 +1,11 @@
-const { getClient } = require("./index");
-const users = require("../data/users");
+import { createRequire } from "module";
+import { getClient } from "./index.js";
+const require = createRequire(import.meta.url);
+const users = require("../data/users.json");
 
 const SCHEMA = "serverless_node_api";
 
-module.exports.handler = async () => {
+export async function handler() {
   const client = await getClient();
   try {
     await client.query("BEGIN");
@@ -17,7 +19,7 @@ module.exports.handler = async () => {
   } finally {
     client.release();
   }
-};
+}
 
 const createUsers = async (client) => {
   const TABLE = "user";

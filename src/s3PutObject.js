@@ -1,7 +1,7 @@
-const { PutObjectCommand } = require("@aws-sdk/client-s3");
-const { s3Client } = require("./s3Client");
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import s3Client from "./s3Client.js";
 
-module.exports.handler = async (event) => {
+export async function handler(event) {
   try {
     const { bucketName } = event.pathParameters;
     const requestBody = JSON.parse(event.body);
@@ -24,9 +24,9 @@ module.exports.handler = async (event) => {
       statusCode: error?.$metadata?.httpStatusCode ?? 422,
     };
   }
-};
+}
 
-const putObject = async ({ bucketName, data, objectKey }) =>
+const putObject = ({ bucketName, data, objectKey }) =>
   s3Client.send(
     new PutObjectCommand({
       Bucket: bucketName,

@@ -12,7 +12,7 @@ const POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD;
 const POSTGRES_USER = process.env.POSTGRES_USER;
 const S3_PORT = process.env.S3_PORT;
 
-module.exports = Object.freeze({
+export default Object.freeze({
   API_VERSION,
   BASE_URI,
   AWS_ACCESS_KEY_ID,

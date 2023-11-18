@@ -1,7 +1,7 @@
-const config = require("./constant/appConstants");
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
+import config from "./constant/appConstants.js";
 
-module.exports.handler = async (event) => {
+export async function handler(event) {
   try {
     const token = event.authorizationToken.replace(/Bearer /g, "");
     const secret = config.JWT_SECRET;
@@ -10,7 +10,7 @@ module.exports.handler = async (event) => {
   } catch (error) {
     return denyPolicy("anonymous", event.methodArn);
   }
-};
+}
 
 const generatePolicy = (principalId, effect, resource) => {
   return {

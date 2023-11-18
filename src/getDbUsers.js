@@ -1,8 +1,8 @@
-const { query } = require("./db/index");
+import { query } from "./db/index.js";
 
 const QUERY = "SELECT * FROM serverless_node_api.user";
 
-module.exports.handler = async () => {
+export async function handler() {
   try {
     const { rows: users } = await query(QUERY);
     return {
@@ -19,4 +19,4 @@ module.exports.handler = async () => {
       statusCode: 500,
     };
   }
-};
+}

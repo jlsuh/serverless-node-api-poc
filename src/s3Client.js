@@ -1,7 +1,7 @@
-const { S3Client } = require("@aws-sdk/client-s3");
-const config = require("./constant/appConstants");
+import { S3Client } from "@aws-sdk/client-s3";
+import config from "./constant/appConstants.js";
 
-module.exports.s3Client = new S3Client({
+export default new S3Client({
   forcePathStyle: true,
   credentials: {
     accessKeyId: config.AWS_ACCESS_KEY_ID,

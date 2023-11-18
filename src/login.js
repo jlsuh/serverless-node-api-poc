@@ -1,7 +1,7 @@
-const config = require("./constant/appConstants");
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
+import config from "./constant/appConstants.js";
 
-module.exports.handler = async (event) => {
+export async function handler(event) {
   try {
     const requestBody = JSON.parse(event.body);
     validateRequest(requestBody);
@@ -22,7 +22,7 @@ module.exports.handler = async (event) => {
       statusCode: 401,
     };
   }
-};
+}
 
 const signToken = (requestBody) =>
   jwt.sign(requestBody, config.JWT_SECRET, {
