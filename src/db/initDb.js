@@ -1,9 +1,10 @@
 import { createRequire } from "module";
+import config from "../constant/appConstants.js";
 import { getClient } from "./index.js";
 const require = createRequire(import.meta.url);
 const users = require("../data/users.json");
 
-const SCHEMA = "serverless_node_api";
+const SCHEMA = config.POSTGRES_SCHEMA_NAME;
 
 export async function handler() {
   const client = await getClient();

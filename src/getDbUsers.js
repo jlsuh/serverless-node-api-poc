@@ -1,6 +1,7 @@
+import config from "./constant/appConstants.js";
 import { query } from "./db/index.js";
 
-const QUERY = "SELECT * FROM serverless_node_api.user";
+const QUERY = `SELECT * FROM ${config.POSTGRES_SCHEMA_NAME}.user`;
 
 export async function handler() {
   try {
