@@ -14,7 +14,7 @@ services:
     image: softwaremill/elasticmq:latest
     ports:
       - "9093:9324"
-      - "9094:9325"
+      - "9094:9325" # enable ElasticMQ dashboard
     volumes:
       - ./elasticmq.conf:/opt/elasticmq.conf
 volumes:
