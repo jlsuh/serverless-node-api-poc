@@ -22,7 +22,7 @@ custom:
     httpPort: "${env:SLS_OFFLINE_HTTP_PORT}"
   serverless-offline-sqs:
     accessKeyId: "${env.${self:provider.stage}:AWS_ACCESS_KEY_ID}"
-    apiVersion: "${env:API_VERSION}"
+    apiVersion: "${env:SQS_API_VERSION}"
     autoCreate: true
     endpoint: "${env:BASE_URI}:${env:SQS_OFFLINE_HOST_PORT}"
     region: "${self:provider.region}"
@@ -40,9 +40,25 @@ resources:
       Type: "AWS::S3::Bucket"
     LocalQueue:
       Properties:
-        QueueName: local-queue
+        QueueName: "${env:SQS_OFFLINE_QUEUE_NAME}"
       Type: "AWS::SQS::Queue"
 functions:
+  receive:
+    handler: src/sqsReceiver.handler
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - LocalQueue
+              - Arn
+  send:
+    handler: src/sqsSender.handler
+    events:
+      - http:
+          authorizer: authorizer
+          cors: true
+          method: post
+          path: send
   initDb:
     handler: src/db/initDb.handler
   authorizer:
