@@ -1,5 +1,4 @@
-BASE_COMPOSE=docker compose --env-file $(ENV_FILE)
-ENV_FILE=./.env.development.local
+BASE_COMPOSE=docker compose
 
 all: start up
 
