@@ -51,14 +51,6 @@ functions:
             Fn::GetAtt:
               - LocalQueue
               - Arn
-  send:
-    handler: src/sqsSender.handler
-    events:
-      - http:
-          authorizer: authorizer
-          cors: true
-          method: post
-          path: send
   initDb:
     handler: src/db/initDb.handler
   authorizer:
