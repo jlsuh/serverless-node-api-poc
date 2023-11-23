@@ -3,19 +3,19 @@ import sqsClient from "./sqsClient.js";
 import { sqsGetQueueUrl } from "./sqsGetQueueURL.js";
 
 export async function sqsSendMessage(event, statusCode, queueName) {
-  const { body: requestBody, requestContext } = event;
-  const { path } = requestContext;
-  const { QueueUrl } = await sqsGetQueueUrl(queueName);
-  const command = new SendMessageCommand({
-    QueueUrl,
-    DelaySeconds: 0,
-    MessageBody: JSON.stringify({
-      path,
-      requestBody,
-      statusCode,
-    }),
-  });
   try {
+    const { body, requestContext } = event;
+    const { path } = requestContext;
+    const { QueueUrl } = await sqsGetQueueUrl(queueName);
+    const command = new SendMessageCommand({
+      QueueUrl,
+      DelaySeconds: 0,
+      MessageBody: JSON.stringify({
+        path,
+        requestBody: body,
+        statusCode,
+      }),
+    });
     return await sqsClient.send(command);
   } catch (error) {
     return {
