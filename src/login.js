@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 import config from "./constant/appConstants.js";
+import { sqsSendMessage } from "./sqsSendMessage.js";
 
 export async function handler(event) {
+  let statusCode = 200;
   try {
     const requestBody = JSON.parse(event.body);
     validateRequest(requestBody);
@@ -9,9 +11,10 @@ export async function handler(event) {
       body: JSON.stringify({
         accessToken: signToken(requestBody),
       }),
-      statusCode: 200,
+      statusCode,
     };
   } catch (error) {
+    statusCode = 401;
     return {
       body: JSON.stringify({
         error: error.message,
@@ -19,8 +22,10 @@ export async function handler(event) {
       headers: {
         "WWW-Authenticate": "Bearer realm=localhost",
       },
-      statusCode: 401,
+      statusCode,
     };
+  } finally {
+    sqsSendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
   }
 }
 
