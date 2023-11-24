@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --ignore ./s3-local --exec sls offline",
+    "dev": "nodemon --ignore ./s3-local/* --exec sls offline",
     "initDb": "npx sls invoke local -f initDb"
   },
   "nodemonConfig": {
