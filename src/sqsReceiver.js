@@ -1,3 +1,4 @@
+import config from "./constant/appConstants.js";
 import { getObject } from "./getObject.js";
 import { putObject } from "./putObject.js";
 
@@ -15,7 +16,10 @@ const composeNewContent = (event) => {
 
 const getExistingData = async () => {
   try {
-    const object = await getObject("local-bucket", "audit-logs");
+    const object = await getObject(
+      config.S3_LOCAL_BUCKET_NAME,
+      config.S3_AUDIT_OBJECT_KEY,
+    );
     return JSON.parse(await object.Body.transformToString());
   } catch (error) {
     return "";
@@ -29,10 +33,10 @@ export async function handler(event) {
   console.log(existingData);
   console.log(">> New:");
   console.log(newData);
-  let data = existingData + newData;
+  const data = existingData + newData;
   await putObject({
-    bucketName: "local-bucket",
+    bucketName: config.S3_LOCAL_BUCKET_NAME,
     data,
-    objectKey: "audit-logs",
+    objectKey: config.S3_AUDIT_OBJECT_KEY,
   });
 }
