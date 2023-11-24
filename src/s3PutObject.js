@@ -1,11 +1,13 @@
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import s3Client from "./s3Client.js";
+import config from "./constant/appConstants.js";
+import { putObject } from "./putObject.js";
+import { sqsSendMessage } from "./sqsSendMessage.js";
 
 export async function handler(event) {
+  let statusCode = 200;
   try {
     const { bucketName } = event.pathParameters;
     const requestBody = JSON.parse(event.body);
-    validateRequest(requestBody, bucketName);
+    validateRequest({ bucketName, requestBody });
     await putObject({
       bucketName,
       ...requestBody,
@@ -14,28 +16,22 @@ export async function handler(event) {
       body: JSON.stringify({
         message: "Successful object upload",
       }),
-      statusCode: 200,
+      statusCode,
     };
   } catch (error) {
+    statusCode = error?.$metadata?.httpStatusCode ?? 422;
     return {
       body: JSON.stringify({
         error: error.message,
       }),
-      statusCode: error?.$metadata?.httpStatusCode ?? 422,
+      statusCode,
     };
+  } finally {
+    sqsSendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
   }
 }
 
-const putObject = ({ bucketName, data, objectKey }) =>
-  s3Client.send(
-    new PutObjectCommand({
-      Bucket: bucketName,
-      Key: objectKey,
-      Body: Buffer.from(JSON.stringify(data)),
-    }),
-  );
-
-const validateRequest = (requestBody, bucketName) => {
+const validateRequest = ({ bucketName, requestBody }) => {
   if (!requestBody) {
     throw new Error("Request body is required");
   }

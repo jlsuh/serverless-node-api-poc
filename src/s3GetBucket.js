@@ -1,7 +1,9 @@
-import { ListObjectsV2Command } from "@aws-sdk/client-s3";
-import s3Client from "./s3Client.js";
+import config from "./constant/appConstants.js";
+import { listObjects } from "./listObjects.js";
+import { sqsSendMessage } from "./sqsSendMessage.js";
 
 export async function handler(event) {
+  let statusCode = 200;
   try {
     const { bucketName } = event.pathParameters;
     const { KeyCount, Contents } = await listObjects(bucketName);
@@ -15,21 +17,17 @@ export async function handler(event) {
               message: `Bucket '${bucketName}' is empty`,
             },
       ),
-      statusCode: 200,
+      statusCode,
     };
   } catch (error) {
+    statusCode = error.$metadata.httpStatusCode;
     return {
       body: JSON.stringify({
         error: error.message,
       }),
-      statusCode: error.$metadata.httpStatusCode,
+      statusCode,
     };
+  } finally {
+    sqsSendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
   }
 }
-
-const listObjects = (bucketName) =>
-  s3Client.send(
-    new ListObjectsV2Command({
-      Bucket: bucketName,
-    }),
-  );

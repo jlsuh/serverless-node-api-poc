@@ -282,15 +282,25 @@ AggregateError
 
 Instead of declaring the AWS access key and secret in the serverless.yml, we use the default AWS profile for development and deployment to hide our keys. Use ElasticMQ, an in-memory message queue system, with serverless-offline-sqs plugin to simulate the local AWS SQS environment. This can be done docker-composing the ElasticMQ service.
 
-# Dockerized Postgres
+## SQS `InvalidClientTokenId: The security token included in the request is invalid.`
 
-```bash
-$ docker compose --env-file .env.development.local up -d
-$ docker compose --env-file .env.development.local config # see resolved env variables
-$ docker exec -ti containerId bash
-$ psql -U root serverless-node-api
-$ psql \l
-$ \q
+```js
+// Problematic code
+import { SQSClient } from "@aws-sdk/client-sqs";
+
+export default new SQSClient({
+  forcePathStyle: true,
+});
+```
+
+```js
+// Solution
+import { SQSClient } from "@aws-sdk/client-sqs";
+
+export default new SQSClient({
+  endpoint: "us-east-1", // add a region
+  forcePathStyle: true,
+});
 ```
 
 ## Docker Desktop + WSL's `sudo service docker start`
@@ -305,3 +315,20 @@ make: *** [makefile:6: start] Error 1
 ```
 
 Fix this by stopping Docker Desktop and running `make stop` & `make` again.
+
+# Dockerized Postgres
+
+```bash
+$ docker compose --env-file .env.development.local up -d
+$ docker compose --env-file .env.development.local config # see resolved env variables
+$ docker exec -ti containerId bash
+$ psql -U root serverless-node-api
+$ psql \l
+$ \q
+```
+
+## Docker cool commands
+
+```bash
+$ docker ps --format 'table {{.Names}}\t{{.Ports}}\t{{.Status}}'
+```

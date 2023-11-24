@@ -1,6 +1,7 @@
 import { createRequire } from "module";
 import config from "../constant/appConstants.js";
 import { getClient } from "./index.js";
+
 const require = createRequire(import.meta.url);
 const users = require("../data/users.json");
 
