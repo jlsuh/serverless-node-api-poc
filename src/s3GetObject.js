@@ -1,6 +1,5 @@
-import { GetObjectCommand } from "@aws-sdk/client-s3";
 import config from "./constant/appConstants.js";
-import s3Client from "./s3Client.js";
+import { getObject } from "./getObject.js";
 import { sqsSendMessage } from "./sqsSendMessage.js";
 
 export async function handler(event) {
@@ -27,11 +26,3 @@ export async function handler(event) {
     sqsSendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
   }
 }
-
-const getObject = (bucketName, objectName) =>
-  s3Client.send(
-    new GetObjectCommand({
-      Bucket: bucketName,
-      Key: objectName,
-    }),
-  );

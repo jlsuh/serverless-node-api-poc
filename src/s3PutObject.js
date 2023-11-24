@@ -1,6 +1,5 @@
-import { PutObjectCommand } from "@aws-sdk/client-s3";
 import config from "./constant/appConstants.js";
-import s3Client from "./s3Client.js";
+import { putObjectInBucket } from "./s3PutObjectInBucket.js";
 import { sqsSendMessage } from "./sqsSendMessage.js";
 
 export async function handler(event) {
@@ -9,7 +8,7 @@ export async function handler(event) {
     const { bucketName } = event.pathParameters;
     const requestBody = JSON.parse(event.body);
     validateRequest(requestBody, bucketName);
-    await putObject({
+    await putObjectInBucket({
       bucketName,
       ...requestBody,
     });
@@ -31,15 +30,6 @@ export async function handler(event) {
     sqsSendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
   }
 }
-
-const putObject = ({ bucketName, data, objectKey }) =>
-  s3Client.send(
-    new PutObjectCommand({
-      Bucket: bucketName,
-      Key: objectKey,
-      Body: Buffer.from(JSON.stringify(data)),
-    }),
-  );
 
 const validateRequest = (requestBody, bucketName) => {
   if (!requestBody) {

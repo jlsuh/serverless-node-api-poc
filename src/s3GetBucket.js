@@ -33,7 +33,7 @@ export async function handler(event) {
   }
 }
 
-const listObjects = (bucketName) =>
+const listObjects = async (bucketName) =>
   s3Client.send(
     new ListObjectsV2Command({
       Bucket: bucketName,
