@@ -15,10 +15,10 @@ const composeNewContent = (event) =>
 
 const getExistingData = async () => {
   try {
-    const object = await getObject(
-      config.S3_LOCAL_BUCKET_NAME,
-      config.S3_AUDIT_OBJECT_KEY,
-    );
+    const object = await getObject({
+      bucketName: config.S3_LOCAL_BUCKET_NAME,
+      objectName: config.S3_AUDIT_OBJECT_KEY,
+    });
     return JSON.parse(await object.Body.transformToString());
   } catch (error) {
     return "";

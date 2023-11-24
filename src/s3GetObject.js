@@ -6,7 +6,7 @@ export async function handler(event) {
   let statusCode = 200;
   try {
     const { bucketName, objectName } = event.pathParameters;
-    const object = await getObject(bucketName, objectName);
+    const object = await getObject({ bucketName, objectName });
     const objectData = JSON.parse(await object.Body.transformToString());
     return {
       body: JSON.stringify({
