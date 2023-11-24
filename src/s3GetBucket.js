@@ -1,6 +1,5 @@
-import { ListObjectsV2Command } from "@aws-sdk/client-s3";
 import config from "./constant/appConstants.js";
-import s3Client from "./s3Client.js";
+import { listObjects } from "./listObjects.js";
 import { sqsSendMessage } from "./sqsSendMessage.js";
 
 export async function handler(event) {
@@ -32,10 +31,3 @@ export async function handler(event) {
     sqsSendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
   }
 }
-
-const listObjects = async (bucketName) =>
-  s3Client.send(
-    new ListObjectsV2Command({
-      Bucket: bucketName,
-    }),
-  );
