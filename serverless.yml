@@ -43,8 +43,8 @@ resources:
         QueueName: "${env:SQS_OFFLINE_QUEUE_NAME}"
       Type: "AWS::SQS::Queue"
 functions:
-  receive:
-    handler: src/sqsReceiver.handler
+  auditConsumer:
+    handler: src/auditConsumer.handler
     events:
       - sqs:
           arn:

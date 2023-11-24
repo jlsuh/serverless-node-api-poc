@@ -1,6 +1,6 @@
 import config from "./constant/appConstants.js";
 import { query } from "./db/index.js";
-import { sqsSendMessage } from "./sqsSendMessage.js";
+import { sendMessage } from "./sendMessage.js";
 
 const QUERY = `SELECT * FROM ${config.POSTGRES_SCHEMA_NAME}.user`;
 
@@ -23,6 +23,6 @@ export async function handler(event) {
       statusCode,
     };
   } finally {
-    sqsSendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
+    sendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
   }
 }
