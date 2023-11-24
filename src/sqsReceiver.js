@@ -5,14 +5,13 @@ import { putObject } from "./putObject.js";
 const getTimeStamp = (sentTimestamp) =>
   `[${new Date(+sentTimestamp).toLocaleString().split(", ").join(" - ")}]`;
 
-const composeNewContent = (event) => {
-  return event.Records.reduce((content, record) => {
+const composeNewContent = (event) =>
+  event.Records.reduce((content, record) => {
     const { body, attributes } = record;
     const { SentTimestamp } = attributes;
     const timeStamp = getTimeStamp(SentTimestamp);
     return `${content}${timeStamp}: ${body}\n`;
   }, "");
-};
 
 const getExistingData = async () => {
   try {
@@ -29,10 +28,6 @@ const getExistingData = async () => {
 export async function handler(event) {
   const existingData = await getExistingData();
   const newData = composeNewContent(event);
-  console.log(">> Existing:");
-  console.log(existingData);
-  console.log(">> New:");
-  console.log(newData);
   const data = existingData + newData;
   await putObject({
     bucketName: config.S3_LOCAL_BUCKET_NAME,

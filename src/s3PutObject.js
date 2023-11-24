@@ -1,5 +1,5 @@
 import config from "./constant/appConstants.js";
-import { putObjectInBucket } from "./s3PutObjectInBucket.js";
+import { putObject } from "./putObject.js";
 import { sqsSendMessage } from "./sqsSendMessage.js";
 
 export async function handler(event) {
@@ -8,7 +8,7 @@ export async function handler(event) {
     const { bucketName } = event.pathParameters;
     const requestBody = JSON.parse(event.body);
     validateRequest(requestBody, bucketName);
-    await putObjectInBucket({
+    await putObject({
       bucketName,
       ...requestBody,
     });
