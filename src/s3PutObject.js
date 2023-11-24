@@ -7,7 +7,7 @@ export async function handler(event) {
   try {
     const { bucketName } = event.pathParameters;
     const requestBody = JSON.parse(event.body);
-    validateRequest(requestBody, bucketName);
+    validateRequest({ bucketName, requestBody });
     await putObject({
       bucketName,
       ...requestBody,
@@ -31,7 +31,7 @@ export async function handler(event) {
   }
 }
 
-const validateRequest = (requestBody, bucketName) => {
+const validateRequest = ({ bucketName, requestBody }) => {
   if (!requestBody) {
     throw new Error("Request body is required");
   }
