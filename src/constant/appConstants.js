@@ -17,7 +17,7 @@ const S3_PORT = process.env.S3_PORT;
 const SQS_HOST_PORT = process.env.SQS_HOST_PORT;
 const SQS_QUEUE_NAME = process.env.SQS_QUEUE_NAME;
 
-export default Object.freeze({
+const config = Object.freeze({
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
   BASE_URI,
@@ -37,3 +37,10 @@ export default Object.freeze({
   SQS_HOST_PORT,
   SQS_QUEUE_NAME,
 });
+
+const statuses = Object.freeze({
+  SUCCESS: "success",
+  FAILURE: "failure",
+});
+
+export { config, statuses };

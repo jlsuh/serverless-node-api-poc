@@ -1,4 +1,4 @@
-import config from "./constant/appConstants.js";
+import { config, statuses } from "./constant/appConstants.js";
 import { getObject } from "./getObject.js";
 import { sendMessage } from "./sendMessage.js";
 
@@ -23,6 +23,11 @@ export async function handler(event) {
       statusCode,
     };
   } finally {
-    sendMessage(event, statusCode, config.SQS_QUEUE_NAME);
+    sendMessage({
+      event,
+      queueName: config.SQS_QUEUE_NAME,
+      status: statuses.SUCCESS,
+      statusCode,
+    });
   }
 }
