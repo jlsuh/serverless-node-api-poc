@@ -8,6 +8,9 @@ start:
 up:
 	$(BASE_COMPOSE) up -d
 
+rq:
+	$(BASE_COMPOSE) restart queue
+
 dev:
 	npm run initDb && npm run dev
 
