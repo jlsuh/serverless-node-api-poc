@@ -46,7 +46,6 @@ resources:
     LocalQueueSQS:
       Properties:
         QueueName: "${env:SQS_QUEUE_NAME}"
-        VisibilityTimeout: 10
       Type: "AWS::SQS::Queue"
     LocalQueueDLQ:
       Properties:
