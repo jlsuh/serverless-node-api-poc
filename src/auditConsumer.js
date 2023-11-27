@@ -26,6 +26,15 @@ const getExistingData = async () => {
 };
 
 export async function handler(event) {
+  event.Records.forEach((record) => {
+    console.log(record);
+    const { body } = record;
+    const { requestBody } = JSON.parse(body);
+    const { enqueueDLQ } = JSON.parse(requestBody);
+    if (enqueueDLQ) {
+      throw new Error("Enqueue DLQ triggered");
+    }
+  });
   const existingData = await getExistingData();
   const newData = composeNewData(event);
   const data = existingData + newData;
