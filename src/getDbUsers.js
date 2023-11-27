@@ -23,6 +23,6 @@ export async function handler(event) {
       statusCode,
     };
   } finally {
-    sendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
+    sendMessage(event, statusCode, config.SQS_QUEUE_NAME);
   }
 }
