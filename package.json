@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --ignore ./s3-local/* --exec sls offline",
-    "initDb": "npx sls invoke local -f initDb"
+    "dev": "nodemon --ignore ./s3-local/* --exec sls offline start",
+    "initDb": "npx sls invoke local -f initDb",
+    "start": "sls offline start"
   },
   "nodemonConfig": {
     "events": {
@@ -17,6 +18,7 @@
     "nodemon": "^3.0.1",
     "serverless-offline": "^13.3.0",
     "serverless-offline-sqs": "^8.0.0",
+    "serverless-offline-sqs-dlq": "^1.5.2",
     "serverless-s3-local": "^0.8.1"
   },
   "dependencies": {

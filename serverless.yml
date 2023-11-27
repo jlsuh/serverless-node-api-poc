@@ -11,6 +11,7 @@ provider:
 plugins:
   - serverless-dotenv-plugin
   - serverless-offline-sqs
+  - serverless-offline-sqs-dlq
   - serverless-offline
   - serverless-s3-local
 package:
@@ -18,16 +19,20 @@ package:
     - "!node_modules/**"
 custom:
   serverless-offline:
-    host: "${env:SLS_OFFLINE_HOST}"
-    httpPort: "${env:SLS_OFFLINE_HTTP_PORT}"
+    host: "${env:SLS_HOST}"
+    httpPort: "${env:SLS_HTTP_PORT}"
   serverless-offline-sqs:
     accessKeyId: "${env.${self:provider.stage}:AWS_ACCESS_KEY_ID}"
     apiVersion: "${env:SQS_API_VERSION}"
     autoCreate: true
-    endpoint: "${env:BASE_URI}:${env:SQS_OFFLINE_HOST_PORT}"
+    endpoint: "${env:BASE_URI}:${env:SQS_HOST_PORT}"
     region: "${self:provider.region}"
     secretAccessKey: "${env.${self:provider.stage}:AWS_SECRET_ACCESS_KEY}"
     skipCacheInvalidation: false
+  serverless-offline-sqs-dlq:
+    auditConsumer:
+      onError: auditDeadLetterConsumer
+      maxReceiveCount: 1
   s3:
     directory: ./s3-local
     host: "${env:S3_HOST}"
@@ -38,9 +43,14 @@ resources:
       Properties:
         BucketName: "${env:S3_LOCAL_BUCKET_NAME}"
       Type: "AWS::S3::Bucket"
-    LocalQueue:
+    LocalQueueSQS:
       Properties:
-        QueueName: "${env:SQS_OFFLINE_QUEUE_NAME}"
+        QueueName: "${env:SQS_QUEUE_NAME}"
+        VisibilityTimeout: 10
+      Type: "AWS::SQS::Queue"
+    LocalQueueDLQ:
+      Properties:
+        QueueName: "${env:DLQ_QUEUE_NAME}"
       Type: "AWS::SQS::Queue"
 functions:
   auditConsumer:
@@ -48,8 +58,16 @@ functions:
     events:
       - sqs:
           arn:
-            Fn::GetAtt:
-              - LocalQueue
+            "Fn::GetAtt":
+              - LocalQueueSQS
+              - Arn
+  auditDeadLetterConsumer:
+    handler: src/auditDeadLetterConsumer.handler
+    events:
+      - sqs:
+          arn:
+            "Fn::GetAtt":
+              - LocalQueueDLQ
               - Arn
   initDb:
     handler: src/db/initDb.handler
@@ -84,7 +102,7 @@ functions:
           authorizer: authorizer
           cors: true
           method: put
-          path: s3/buckets/{bucketName}
+          path: "s3/buckets/{bucketName}"
     handler: src/s3PutObject.handler
   s3GetBucket:
     events:
@@ -92,7 +110,7 @@ functions:
           authorizer: authorizer
           cors: true
           method: get
-          path: s3/buckets/{bucketName}
+          path: "s3/buckets/{bucketName}"
     handler: src/s3GetBucket.handler
   s3GetObject:
     events:
@@ -100,11 +118,11 @@ functions:
           authorizer: authorizer
           cors: true
           method: get
-          path: s3/buckets/{bucketName}/objects/{objectName}
+          path: "s3/buckets/{bucketName}/objects/{objectName}"
     handler: src/s3GetObject.handler
   s3EventResponse:
     events:
       - s3:
           bucket: "${env:S3_LOCAL_BUCKET_NAME}"
-          event: "s3:*"
+          event: "s3:ObjectCreated:*"
     handler: src/s3EventResponse.handler
