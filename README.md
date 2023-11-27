@@ -316,6 +316,18 @@ make: *** [makefile:6: start] Error 1
 
 Fix this by stopping Docker Desktop and running `make stop` & `make` again.
 
+## Messages being indefinitely enqueued back into SQS instead of DLQ
+
+```bash
+# Problematic command
+$ sls offline # certain services are not triggered when using the command without `start`
+```
+
+```bash
+# Solution
+$ sls offline start
+```
+
 # Dockerized Postgres
 
 ```bash
