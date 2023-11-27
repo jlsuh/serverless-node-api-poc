@@ -1,4 +1,4 @@
-import config from "./constant/appConstants.js";
+import { config } from "./constant/appConstants.js";
 import { getObject } from "./getObject.js";
 import { putObject } from "./putObject.js";
 
@@ -25,16 +25,16 @@ const getExistingData = async () => {
   }
 };
 
+const simulateDLQ = () => {
+  const random = Math.random();
+  console.log(`>>>>>>>>>> [DLQ %] <${random}> <<<<<<<<<<`);
+  if (random > 0.5) {
+    throw new Error("DLQ triggered.");
+  }
+};
+
 export async function handler(event) {
-  event.Records.forEach((record) => {
-    console.log(record);
-    const { body } = record;
-    const { requestBody } = JSON.parse(body);
-    const { enqueueDLQ } = JSON.parse(requestBody);
-    if (enqueueDLQ) {
-      throw new Error("Enqueue DLQ triggered");
-    }
-  });
+  simulateDLQ();
   const existingData = await getExistingData();
   const newData = composeNewData(event);
   const data = existingData + newData;
