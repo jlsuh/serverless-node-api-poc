@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { config, statuses } from "./constant/appConstants.js";
-import { sendMessage } from "./sendMessage.js";
+import sendMessage from "./sendMessage.js";
 
 export async function handler(event) {
   let statusCode = 200;

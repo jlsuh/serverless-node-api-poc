@@ -1,6 +1,6 @@
 import { config } from "./constant/appConstants.js";
-import { getObject } from "./getObject.js";
-import { putObject } from "./putObject.js";
+import getObject from "./getObject.js";
+import putObject from "./putObject.js";
 
 const getTimeStamp = (sentTimestamp) =>
   `[${new Date(+sentTimestamp).toLocaleString().split(", ").join(" - ")}]`;
@@ -25,7 +25,7 @@ const getExistingData = async ({ bucketName, objectName }) => {
   }
 };
 
-export const writeAuditLog = async (event) => {
+const writeAuditLog = async (event) => {
   const existingData = await getExistingData({
     bucketName: config.S3_LOCAL_BUCKET_NAME,
     objectName: config.S3_AUDIT_OBJECT_KEY,
@@ -38,3 +38,5 @@ export const writeAuditLog = async (event) => {
     objectKey: config.S3_AUDIT_OBJECT_KEY,
   });
 };
+
+export default writeAuditLog;

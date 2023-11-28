@@ -1,4 +1,4 @@
-import { writeAuditLog } from "./writeAuditLog.js";
+import writeAuditLog from "./writeAuditLog.js";
 
 /*
 const simulateDLQTrigger = () => {

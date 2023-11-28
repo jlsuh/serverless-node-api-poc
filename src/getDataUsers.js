@@ -1,6 +1,6 @@
 import { createRequire } from "module";
 import { config, statuses } from "./constant/appConstants.js";
-import { sendMessage } from "./sendMessage.js";
+import sendMessage from "./sendMessage.js";
 
 const require = createRequire(import.meta.url);
 const users = require("./data/users.json");

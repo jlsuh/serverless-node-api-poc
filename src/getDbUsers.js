@@ -1,6 +1,6 @@
 import { config, statuses } from "./constant/appConstants.js";
 import { query } from "./db/index.js";
-import { sendMessage } from "./sendMessage.js";
+import sendMessage from "./sendMessage.js";
 
 const QUERY = `SELECT * FROM ${config.POSTGRES_SCHEMA_NAME}.user`;
 

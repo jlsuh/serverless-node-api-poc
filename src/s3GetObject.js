@@ -1,6 +1,6 @@
 import { config, statuses } from "./constant/appConstants.js";
-import { getObject } from "./getObject.js";
-import { sendMessage } from "./sendMessage.js";
+import getObject from "./getObject.js";
+import sendMessage from "./sendMessage.js";
 
 export async function handler(event) {
   let statusCode = 200;

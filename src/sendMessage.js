@@ -1,6 +1,6 @@
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
 import { sqsClient } from "./clients.js";
-import { getQueueUrl } from "./getQueueURL.js";
+import getQueueUrl from "./getQueueURL.js";
 
 export async function sendMessage({ event, queueName, status, statusCode }) {
   try {
@@ -27,3 +27,5 @@ export async function sendMessage({ event, queueName, status, statusCode }) {
     };
   }
 }
+
+export default sendMessage;

@@ -1,5 +1,5 @@
 import { statuses } from "./constant/appConstants.js";
-import { writeAuditLog } from "./writeAuditLog.js";
+import writeAuditLog from "./writeAuditLog.js";
 
 export async function handler(event) {
   const failedEvent = {
