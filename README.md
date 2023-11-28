@@ -335,7 +335,7 @@ $ sls offline start
 $ docker compose --env-file .env.development.local up -d
 $ docker compose --env-file .env.development.local config # see resolved env variables
 $ docker exec -ti containerId bash
-$ psql -U root serverless-node-api
+$ psql -U root serverless-node-api-poc
 $ psql \l
 $ \q
 ```

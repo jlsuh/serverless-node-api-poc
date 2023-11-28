@@ -1,5 +1,5 @@
 {
-  "name": "serverless-node-api",
+  "name": "serverless-node-api-poc",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
