@@ -20,4 +20,4 @@ down:
 stop:
 	sudo service docker stop
 
-.PHONY: all start up down stop
+.PHONY: all start up rq dev down stop
