@@ -43,11 +43,11 @@ resources:
       Properties:
         BucketName: "${env:S3_LOCAL_BUCKET_NAME}"
       Type: "AWS::S3::Bucket"
-    LocalQueueSQS:
+    LocalSQS:
       Properties:
         QueueName: "${env:SQS_QUEUE_NAME}"
       Type: "AWS::SQS::Queue"
-    LocalQueueDLQ:
+    LocalDLQ:
       Properties:
         QueueName: "${env:DLQ_QUEUE_NAME}"
       Type: "AWS::SQS::Queue"
@@ -58,7 +58,7 @@ functions:
       - sqs:
           arn:
             "Fn::GetAtt":
-              - LocalQueueSQS
+              - LocalSQS
               - Arn
   auditDeadLetterConsumer:
     handler: src/auditDeadLetterConsumer.handler
@@ -66,7 +66,7 @@ functions:
       - sqs:
           arn:
             "Fn::GetAtt":
-              - LocalQueueDLQ
+              - LocalDLQ
               - Arn
   initDb:
     handler: src/db/initDb.handler
