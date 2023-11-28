@@ -1,12 +1,12 @@
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
-import sqsClient from "./sqsClient.js";
-import { sqsGetQueueUrl } from "./sqsGetQueueUrl.js";
+import { sqsClient } from "./clients.js";
+import getQueueUrl from "./getQueueURL.js";
 
-export async function sqsSendMessage(event, statusCode, queueName) {
+export async function sendMessage({ event, queueName, status, statusCode }) {
   try {
     const { body, requestContext } = event;
     const { path } = requestContext;
-    const { QueueUrl } = await sqsGetQueueUrl(queueName);
+    const { QueueUrl } = await getQueueUrl(queueName);
     const command = new SendMessageCommand({
       QueueUrl,
       DelaySeconds: 0,
@@ -14,6 +14,7 @@ export async function sqsSendMessage(event, statusCode, queueName) {
         path,
         requestBody: body,
         statusCode,
+        status,
       }),
     });
     return await sqsClient.send(command);
@@ -26,3 +27,5 @@ export async function sqsSendMessage(event, statusCode, queueName) {
     };
   }
 }
+
+export default sendMessage;

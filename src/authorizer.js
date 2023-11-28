@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import config from "./constant/appConstants.js";
+import { config } from "./constant/appConstants.js";
 
 export async function handler(event) {
   try {

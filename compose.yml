@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=root
       - POSTGRES_DB=serverless-node-api
-  queue:
+  elasticmq:
     image: softwaremill/elasticmq:latest
     ports:
       - "9093:9324"

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import config from "./constant/appConstants.js";
-import { sqsSendMessage } from "./sqsSendMessage.js";
+import { config, statuses } from "./constant/appConstants.js";
+import sendMessage from "./sendMessage.js";
 
 export async function handler(event) {
   let statusCode = 200;
@@ -25,7 +25,12 @@ export async function handler(event) {
       statusCode,
     };
   } finally {
-    sqsSendMessage(event, statusCode, config.SQS_OFFLINE_QUEUE_NAME);
+    sendMessage({
+      event,
+      queueName: config.SQS_QUEUE_NAME,
+      status: statuses.SUCCESS,
+      statusCode,
+    });
   }
 }
 

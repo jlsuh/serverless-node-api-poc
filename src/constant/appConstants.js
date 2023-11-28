@@ -14,10 +14,10 @@ const POSTGRES_USER = process.env.POSTGRES_USER;
 const S3_AUDIT_OBJECT_KEY = process.env.S3_AUDIT_OBJECT_KEY;
 const S3_LOCAL_BUCKET_NAME = process.env.S3_LOCAL_BUCKET_NAME;
 const S3_PORT = process.env.S3_PORT;
-const SQS_OFFLINE_HOST_PORT = process.env.SQS_OFFLINE_HOST_PORT;
-const SQS_OFFLINE_QUEUE_NAME = process.env.SQS_OFFLINE_QUEUE_NAME;
+const SQS_HOST_PORT = process.env.SQS_HOST_PORT;
+const SQS_QUEUE_NAME = process.env.SQS_QUEUE_NAME;
 
-export default Object.freeze({
+const config = Object.freeze({
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
   BASE_URI,
@@ -34,6 +34,13 @@ export default Object.freeze({
   S3_AUDIT_OBJECT_KEY,
   S3_LOCAL_BUCKET_NAME,
   S3_PORT,
-  SQS_OFFLINE_HOST_PORT,
-  SQS_OFFLINE_QUEUE_NAME,
+  SQS_HOST_PORT,
+  SQS_QUEUE_NAME,
 });
+
+const statuses = Object.freeze({
+  SUCCESS: "success",
+  FAILURE: "failure",
+});
+
+export { config, statuses };

@@ -8,6 +8,9 @@ start:
 up:
 	$(BASE_COMPOSE) up -d
 
+remq:
+	$(BASE_COMPOSE) restart elasticmq
+
 dev:
 	npm run initDb && npm run dev
 
@@ -17,4 +20,4 @@ down:
 stop:
 	sudo service docker stop
 
-.PHONY: all start up down stop
+.PHONY: all start up remq dev down stop
