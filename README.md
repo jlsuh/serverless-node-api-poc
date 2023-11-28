@@ -27,21 +27,22 @@ $ npx sls plugin install -n serverless-offline serverless-dotenv-plugin # ... ap
 # Start serverless-offline locally
 
 ```bash
-$ npx sls offline
+$ npx sls offline start
 ```
 
 ## Through nodemon
 
 ```bash
-$ nodemon --ignore ./s3-local --exec sls offline # already set as npm run dev
+$ nodemon --ignore ./s3-local/* --exec sls offline start # already set as npm run dev
+# refer to "Solutions to errors" section to see why `start` is required
 ```
 
 # Start serverless with specific stage environment variables
 
 ```bash
 # useDotenv must be set as true
-$ npx sls offline # defaults to "development"
-$ npx sls offline --stage production # matches with .env.production
+$ npx sls offline start # defaults to "development"
+$ npx sls offline start --stage production # matches with .env.production
 # .env, .env.development, and .env.production files should be included in out repository as they define defaults.
 # .env.*.local files should be added to .gitignore, as those files are intended to be ignored. .env.local is where secrets can be stored.
 
