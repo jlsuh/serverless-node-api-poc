@@ -9,7 +9,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=root
-      - POSTGRES_DB=serverless-node-api-poc
+      - POSTGRES_DB=postgres
   elasticmq:
     image: softwaremill/elasticmq:latest
     ports:
