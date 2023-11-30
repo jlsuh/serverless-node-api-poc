@@ -76,7 +76,7 @@ $ npx sls offline start --stage production # matches with .env.production
 # each of repeating variables are not overwritten by the next .env file
 ```
 
-## Solutions to errors
+## Troubleshooting
 
 ### `Error: [504] - Lambda timeout.: Error while running handler`
 
