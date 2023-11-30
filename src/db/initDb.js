@@ -35,8 +35,8 @@ const createUsers = async (client) => {
   );
   await client.query(
     `INSERT INTO ${SCHEMA}.${TABLE} (username, fullname)
-      SELECT user.username, user.fullname
-      FROM json_to_recordset($1) AS user(username VARCHAR(100), fullname VARCHAR(100))`,
+      SELECT "${TABLE}".username, "${TABLE}".fullname
+      FROM json_to_recordset($1) AS "${TABLE}"(username VARCHAR(100), fullname VARCHAR(100))`,
     [JSON.stringify(users)],
   );
 };
