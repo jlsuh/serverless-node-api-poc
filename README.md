@@ -1,6 +1,6 @@
 # serverless-node-api-poc
 
-A Node.js + Serverless + S3 + SQS + DLQ proof of concept.
+A Node.js + Serverless + S3 + SQS + DLQ + PostgreSQL proof of concept.
 
 ## Run locally
 
