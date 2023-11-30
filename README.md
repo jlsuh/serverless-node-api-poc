@@ -1,43 +1,68 @@
-# Install serverless as local package
+# serverless-node-api-poc
+
+A Node.js + Serverless + S3 + SQS + DLQ proof of concept.
+
+## Run locally
+
+```bash
+$ make up
+$ make dev
+```
+
+## Restart ElasticMQ
+
+```bash
+$ make remq
+```
+
+## Tear down
+
+```bash
+$ make down
+```
+
+# Docs
+
+## Install serverless as local package
 
 ```bash
 $ npm install serverless # having it as global package is discouraged
 # pnpm can be used as an alternative to enforce the exclusion of serverless in global scope
 ```
 
-# Start a new serverless project
+## Start a new serverless project
 
 ```bash
 $ npx sls
 ```
 
-# Test functions locally
+## Test functions locally
 
 ```bash
 $ npx sls invoke local -f path/to/function
 ```
 
-# Install plugins
+## Install plugins
 
 ```bash
 $ npx sls plugin install -n serverless-offline serverless-dotenv-plugin # ... append other plugins
 # automatically added in package.json
 ```
 
-# Start serverless-offline locally
+## Start serverless-offline locally
 
 ```bash
 $ npx sls offline start
 ```
 
-## Through nodemon
+### Through nodemon
 
 ```bash
 $ nodemon --ignore ./s3-local/* --exec sls offline start # already set as npm run dev
 # refer to "Solutions to errors" section to see why `start` is required
 ```
 
-# Start serverless with specific stage environment variables
+## Start serverless with specific stage environment variables
 
 ```bash
 # useDotenv must be set as true
@@ -51,9 +76,9 @@ $ npx sls offline start --stage production # matches with .env.production
 # each of repeating variables are not overwritten by the next .env file
 ```
 
-# Solutions to errors
+## Solutions to errors
 
-## `Error: [504] - Lambda timeout.: Error while running handler`
+### `Error: [504] - Lambda timeout.: Error while running handler`
 
 ```js
 // Problematic code
@@ -74,7 +99,7 @@ module.exports.handler = (event, context, callback) => {
 };
 ```
 
-## `[504] - Lambda timeout.`
+### `[504] - Lambda timeout.`
 
 ```js
 // Problematic code
@@ -90,9 +115,9 @@ module.exports.handler = async (event, context, callback) => {
 };
 ```
 
-## Server responding `502 Bad Gateway` on every single request (although error handling logic seems to be correct)
+### Server responding `502 Bad Gateway` on every single request (although error handling logic seems to be correct)
 
-### Cause 1
+#### Cause 1
 
 Missing try-catch block.
 
@@ -124,7 +149,7 @@ module.exports.handler = async (event, _, callback) => {
 };
 ```
 
-### Cause 2
+#### Cause 2
 
 Missing `async/await` pairs.
 
@@ -162,7 +187,7 @@ const anAsyncFunction = async (/*...*/) => {
 };
 ```
 
-## Identical data but different `instanceof` exceptions
+### Identical data but different `instanceof` exceptions
 
 This can be proofed by the following code:
 
@@ -241,7 +266,7 @@ module.exports.handler = async (/*...*/) => {
 };
 ```
 
-## SQS `AggregateError`
+### SQS `AggregateError`
 
 ```bash
 Warning: AggregateError
@@ -283,7 +308,7 @@ AggregateError
 
 Instead of declaring the AWS access key and secret in the serverless.yml, we use the default AWS profile for development and deployment to hide our keys. Use ElasticMQ, an in-memory message queue system, with serverless-offline-sqs plugin to simulate the local AWS SQS environment. This can be done docker-composing the ElasticMQ service.
 
-## SQS `InvalidClientTokenId: The security token included in the request is invalid.`
+### SQS `InvalidClientTokenId: The security token included in the request is invalid.`
 
 ```js
 // Problematic code
@@ -304,7 +329,7 @@ export default new SQSClient({
 });
 ```
 
-## Docker Desktop + WSL's `sudo service docker start`
+### Docker Desktop + WSL's `sudo service docker start`
 
 `make` may fail with the following error:
 
@@ -317,7 +342,7 @@ make: *** [makefile:6: start] Error 1
 
 Fix this by stopping Docker Desktop and running `make stop` & `make` again.
 
-## Messages being indefinitely enqueued back into SQS instead of DLQ
+### Messages being indefinitely enqueued back into SQS instead of DLQ
 
 ```bash
 # Problematic command
@@ -329,7 +354,7 @@ $ sls offline # certain services are not triggered when using the command withou
 $ sls offline start
 ```
 
-# Dockerized Postgres
+## Dockerized Postgres
 
 ```bash
 $ docker compose --env-file .env.development.local up -d
